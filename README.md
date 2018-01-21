@@ -1,2 +1,2 @@
 # KniffBot
-A simple chat bot
+A simple bot
