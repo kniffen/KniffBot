@@ -1,6 +1,7 @@
 "use strict";
 
 var state = {
+  events: [],
   discord: {
     online: false
   },

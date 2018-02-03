@@ -1,5 +1,9 @@
-const { expect } = require('chai')
+const chai = require('chai')
+const { expect } = chai
+const spies = require('chai-spies')
 const loadState = require('../../lib/utils/load-state.js')
+
+chai.use(spies)
 
 describe('utils/loadState()', () => {
   const config = {
@@ -13,6 +17,7 @@ describe('utils/loadState()', () => {
   const req = () => 'foobar'
 
   const state = {
+    events: [],
     discord: {
       online: false
     },
@@ -29,12 +34,15 @@ describe('utils/loadState()', () => {
     resolve: () => undefined
   }
 
-  loadState(config, req, state, fs, path)
+  const updateEvents = chai.spy()
+
+  loadState(config, req, state, fs, path, updateEvents)
 
   it('should load config.json into the state', () => {
     expect(state).to.deep.equal({
       timezone: 'foobar',
       timeformat: 'barfoo',
+      events: [],
       discord: {
         online: false
       },
@@ -47,5 +55,7 @@ describe('utils/loadState()', () => {
         baz: 'foobar'
       }
     })
+
+    expect(updateEvents).to.have.been.called()
   })
 })

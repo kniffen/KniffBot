@@ -1,9 +1,12 @@
 'use strict';
 
-var _require = require('chai'),
-    expect = _require.expect;
+var chai = require('chai');
+var expect = chai.expect;
 
+var spies = require('chai-spies');
 var loadState = require('../../lib/utils/load-state.js');
+
+chai.use(spies);
 
 describe('utils/loadState()', function () {
   var config = {
@@ -19,6 +22,7 @@ describe('utils/loadState()', function () {
   };
 
   var state = {
+    events: [],
     discord: {
       online: false
     },
@@ -39,12 +43,15 @@ describe('utils/loadState()', function () {
     }
   };
 
-  loadState(config, req, state, fs, path);
+  var updateEvents = chai.spy();
+
+  loadState(config, req, state, fs, path, updateEvents);
 
   it('should load config.json into the state', function () {
     expect(state).to.deep.equal({
       timezone: 'foobar',
       timeformat: 'barfoo',
+      events: [],
       discord: {
         online: false
       },
@@ -57,5 +64,7 @@ describe('utils/loadState()', function () {
         baz: 'foobar'
       }
     });
+
+    expect(updateEvents).to.have.been.called();
   });
 });

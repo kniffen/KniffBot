@@ -63,8 +63,8 @@ describe('kniffbot()', function () {
     };
   });
 
-  it('should attempt to set up the bot without issues', function () {
-    kniffbot(config, req, env, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState);
+  it('should attempt to set up the bot without issues', async function () {
+    await kniffbot(config, req, env, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState);
 
     expect(dotenv.config).to.have.been.called();
     expect(log).to.have.been.called.with('Missing Discord token');
@@ -78,20 +78,20 @@ describe('kniffbot()', function () {
     });
   });
 
-  it('should set up Discord', function () {
+  it('should set up Discord', async function () {
     env.DISCORD_TOKEN = 'foobar';
 
-    kniffbot(config, req, env, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState);
+    await kniffbot(config, req, env, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState);
 
     expect(services.discord.login).to.have.been.called.with('foobar');
   });
 
-  it('should set up TwitchIRC', function () {
+  it('should set up TwitchIRC', async function () {
     env.TWITCH_IRC_USERNAME = 'foo';
     env.TWITCH_IRC_TOKEN = 'bar';
     env.TWITCH_CHANNEL = 'qux';
 
-    kniffbot(config, req, env, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState);
+    await kniffbot(config, req, env, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState);
 
     expect(services.twitchIRC.connect).to.have.been.deep.called.with({
       host: 'irc.chat.twitch.tv',
@@ -104,10 +104,10 @@ describe('kniffbot()', function () {
     });
   });
 
-  it('should set up Cleverbot', function () {
+  it('should set up Cleverbot', async function () {
     env.CLEVERBOT_KEY = 'foobar';
 
-    kniffbot(config, req, env, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState);
+    await kniffbot(config, req, env, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState);
 
     expect(services.cleverbot.configure).to.have.been.deep.called.with({ botapi: 'foobar' });
   });

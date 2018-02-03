@@ -1,6 +1,6 @@
 'use strict';
 
-function kniffbot(config) {
+async function kniffbot(config) {
   var req = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : require;
   var env = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : process.env;
   var dotenv = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : require('dotenv');
@@ -18,7 +18,7 @@ function kniffbot(config) {
   });
 
   dotenv.config();
-  loadState(config);
+  await loadState(config);
 
   if (env.DISCORD_TOKEN) {
     services.discord = new DiscordJS.Client();

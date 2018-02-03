@@ -1,4 +1,4 @@
-function kniffbot (
+async function kniffbot (
   config,
   req = require,
   env = process.env,
@@ -15,7 +15,7 @@ function kniffbot (
   process.on('unhandledRejection', rej => log(rej, 'Promise Rejection'))
 
   dotenv.config()
-  loadState(config)
+  await loadState(config)
 
   if (env.DISCORD_TOKEN) {
     services.discord = new DiscordJS.Client()

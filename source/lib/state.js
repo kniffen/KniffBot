@@ -1,4 +1,5 @@
 const state = {
+  events: [],
   discord: {
     online: false
   },
