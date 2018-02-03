@@ -37,7 +37,7 @@ describe('commands/weather()', function () {
     expect(message).to.deep.equal({
       args: ['foo', 'bar'],
       isCode: true,
-      output: '**foobar right now:**\n0\xB0C/32\xB0F skytext feels like 1\xB0C/33.8\xB0F winddisplay wind\n**Forecast for tomorrow:**\nHigh: 1\xB0C/33.8\xB0F, low: 0\xB0C/32\xB0F skytextday with precip% chance precip.'
+      output: '**foobar right now:**\n0\xB0C/32\xB0F skytext feels like 1\xB0C/33\xB0F winddisplay wind\n**Forecast for tomorrow:**\nHigh: 1\xB0C/33\xB0F, low: 0\xB0C/32\xB0F skytextday with precip% chance precip.'
     });
   });
 

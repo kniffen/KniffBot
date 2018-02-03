@@ -38,9 +38,9 @@ describe('commands/weather()', () => {
       isCode: true,
       output: 
 `**foobar right now:**
-0°C/32°F skytext feels like 1°C/33.8°F winddisplay wind
+0°C/32°F skytext feels like 1°C/33°F winddisplay wind
 **Forecast for tomorrow:**
-High: 1°C/33.8°F, low: 0°C/32°F skytextday with precip% chance precip.`
+High: 1°C/33°F, low: 0°C/32°F skytextday with precip% chance precip.`
     })
   })
 

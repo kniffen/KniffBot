@@ -15,9 +15,9 @@ async function weather(
 
     message.output = 
 `**${weatherData[0].location.name} right now:**
-${current.temperature}°C/${current.temperature*1.8+32}°F ${current.skytext} feels like ${current.feelslike}°C/${current.feelslike*1.8+32}°F ${current.winddisplay} wind
+${current.temperature}°C/${Math.floor(current.temperature*1.8+32)}°F ${current.skytext} feels like ${current.feelslike}°C/${Math.floor(current.feelslike*1.8+32)}°F ${current.winddisplay} wind
 **Forecast for tomorrow:**
-High: ${forecast[1].high}°C/${forecast[1].high*1.8+32}°F, low: ${forecast[1].low}°C/${forecast[1].low*1.8+32}°F ${forecast[1].skytextday} with ${forecast[1].precip}% chance precip.`
+High: ${forecast[1].high}°C/${Math.floor(forecast[1].high*1.8+32)}°F, low: ${forecast[1].low}°C/${Math.floor(forecast[1].low*1.8+32)}°F ${forecast[1].skytextday} with ${forecast[1].precip}% chance precip.`
 
     message.isCode = true
 
