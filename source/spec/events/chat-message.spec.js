@@ -13,16 +13,6 @@ describe('events/chatMessage()', () => {
     }
   }
 
-  // const state = {
-  //   foobar: {
-  //     username: 'barfoo'
-  //   },
-  //   commands: {
-  //     foo: 'bar',
-  //     bar: async message => Object.assign(message, {output: 'baz'})
-  //   }
-  // }
-
   const commands = {
     foo: 'bar',
     bar: async message => Object.assign(message, {output: 'baz'})
