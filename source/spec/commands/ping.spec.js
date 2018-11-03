@@ -11,7 +11,15 @@ describe('commands/ping()', () => {
 
     expect(message).to.deep.equal({
       timestamp: 50,
-      output: '100ms'
+      output: 'Pong! (100ms)'
+    })
+  })
+
+  it('should return "Pong!" if there\'s no timestamp', async () => {
+    const message = await ping({}, date)
+
+    expect(message).to.deep.equal({
+      output: 'Pong!'
     })
   })
 

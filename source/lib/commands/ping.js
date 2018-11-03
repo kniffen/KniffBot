@@ -3,7 +3,7 @@ async function ping(
   date = Date
 ) {
 
-  message.output = `${date.now() - message.timestamp}ms`
+  message.output = `Pong!${message.timestamp ? ` (${date.now() - message.timestamp}ms)` : ''}`
 
   // TODO
   // - Add ping time for argument url
