@@ -1,10 +1,10 @@
 async function time(
   message,
-  state = require('../state.js'),
+  config = require('../../../config.json'),
   moment = require('moment-timezone')
 ) {
 
-  message.output = moment.tz(state.timezone).format(state.timeformat)
+  message.output = moment.tz(config.timezone).format(config.timeformat)
   message.isCode = true
 
   return message

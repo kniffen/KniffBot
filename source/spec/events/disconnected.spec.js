@@ -19,13 +19,7 @@ describe('events/disconnected()', () => {
     }
   }
 
-  const state = {
-    discord: {
-      online: true
-    }
-  }
-
-  disconnected('discord', log, env, services, state)
+  disconnected('discord', log, env, services)
 
   it('should log a message to the console', () => {
     expect(log).to.have.been.called.with('discord disconnected')
@@ -35,7 +29,4 @@ describe('events/disconnected()', () => {
     expect(services.discord.login).to.have.been.called.with('barfoo')
   })
 
-  it('should update the state of the service', () => {
-    expect(state.discord.online).to.be.false
-  })
 })

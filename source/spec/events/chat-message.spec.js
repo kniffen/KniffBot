@@ -13,14 +13,19 @@ describe('events/chatMessage()', () => {
     }
   }
 
-  const state = {
-    foobar: {
-      username: 'barfoo'
-    },
-    commands: {
-      foo: 'bar',
-      bar: async message => Object.assign(message, {output: 'baz'})
-    }
+  // const state = {
+  //   foobar: {
+  //     username: 'barfoo'
+  //   },
+  //   commands: {
+  //     foo: 'bar',
+  //     bar: async message => Object.assign(message, {output: 'baz'})
+  //   }
+  // }
+
+  const commands = {
+    foo: 'bar',
+    bar: async message => Object.assign(message, {output: 'baz'})
   }
 
   const sendMessage = chai.spy()
@@ -31,7 +36,7 @@ describe('events/chatMessage()', () => {
       command: 'foo'
     }))
 
-    await chatMessage('foobar', {}, services, state, parseMessage, sendMessage)
+    await chatMessage('foobar', {}, services, commands, parseMessage, sendMessage)
 
     expect(parseMessage).to.have.been.called.with('foobar', {})
     expect(sendMessage).to.have.been.called.with({
@@ -47,7 +52,7 @@ describe('events/chatMessage()', () => {
       command: 'bar'
     }))
 
-    await chatMessage('foobar', {}, services, state, parseMessage, sendMessage)
+    await chatMessage('foobar', {}, services, commands, parseMessage, sendMessage)
 
     expect(parseMessage).to.have.been.called.with('foobar', {})    
     expect(sendMessage).to.have.been.called.with({
@@ -59,17 +64,19 @@ describe('events/chatMessage()', () => {
 
   it('should handle bot being mentioned', async () => {
     const parseMessage = chai.spy(() => ({
-      input: '@barfoo hello'
+      input: '@barfoo hello',
+      self: {username: 'barfoo'}
     }))
 
-    await chatMessage('foobar', {}, services, state, parseMessage, sendMessage)
+    await chatMessage('foobar', {}, services, commands, parseMessage, sendMessage)
 
     expect(parseMessage).to.have.been.called.with('foobar', {})
     expect(services.cleverbot.write).to.have.been.called.with('hello')
     expect(sendMessage).to.have.been.called.with({
       input: '@barfoo hello',
       output: 'hi',
-      isReply: true
+      isReply: true,
+      self: {username: 'barfoo'}
     })
   })
 

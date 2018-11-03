@@ -7,7 +7,7 @@ chai.use(spies)
 
 describe('commands/time()', () => {
 
-  const state = {
+  const config = {
     timezone: 'foo',
     timeformat: 'bar'
   }
@@ -17,7 +17,7 @@ describe('commands/time()', () => {
   const moment = {tz}
 
   it('should return the current time', async () => {
-    const message = await time({args: []}, state, moment)
+    const message = await time({args: []}, config, moment)
 
     expect(tz).to.have.been.called.with('foo')
     expect(format).to.have.been.called.with('bar')

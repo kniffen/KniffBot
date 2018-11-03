@@ -4,7 +4,7 @@ const events = require('../../lib/commands/events.js')
 
 describe('commands/events', () => {
   
-  const state = {
+  const config = {
     timezone: 0,
     timeformat: 'barfoo'
   }
@@ -35,7 +35,7 @@ describe('commands/events', () => {
 
   it('should list upcoming events', async () => {
 
-    const message = await events({timestamp: 100}, state, moment, getEvents)
+    const message = await events({timestamp: 100}, config, moment, getEvents)
 
     expect(message).to.deep.equal({
       timestamp: 100,

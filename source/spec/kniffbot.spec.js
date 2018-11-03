@@ -9,7 +9,6 @@ const kniffbot = require('../lib/kniffbot.js')
 describe('kniffbot()', () => {
   let env, services
 
-  const config = {}
   const req = chai.spy()
   
   const dotenv = {
@@ -58,7 +57,7 @@ describe('kniffbot()', () => {
   })
 
   it('should attempt to set up the bot without issues', async () => {
-    await kniffbot(config, req, env, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState)
+    await kniffbot(env, req, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState)
 
     expect(dotenv.config).to.have.been.called()
     expect(log).to.have.been.called.with('Missing Discord token')
@@ -75,7 +74,7 @@ describe('kniffbot()', () => {
   it('should set up Discord', async () => {
     env.DISCORD_TOKEN = 'foobar'
 
-    await kniffbot(config, req, env, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState)
+    await kniffbot(env, req, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState)
 
     expect(services.discord.login).to.have.been.called.with('foobar')
   })
@@ -85,7 +84,7 @@ describe('kniffbot()', () => {
     env.TWITCH_IRC_TOKEN = 'bar'
     env.TWITCH_CHANNEL = 'qux'
 
-    await kniffbot(config, req, env, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState)
+    await kniffbot(env, req, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState)
 
     expect(services.twitchIRC.connect).to.have.been.deep.called.with({
       host: 'irc.chat.twitch.tv',
@@ -101,7 +100,7 @@ describe('kniffbot()', () => {
   it('should set up Cleverbot', async () => {
     env.CLEVERBOT_KEY = 'foobar'
 
-    await kniffbot(config, req, env, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState)
+    await kniffbot(env, req, dotenv, DiscordJS, IRC, Cleverbot, services, log, loadState)
 
     expect(services.cleverbot.configure).to.have.been.deep.called.with({botapi: 'foobar'})
   })

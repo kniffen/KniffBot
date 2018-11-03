@@ -1,21 +1,18 @@
 async function kniffbot (
-  config,
-  req = require,
   env = process.env,
+  req = require,
   dotenv = require('dotenv'),
   DiscordJS = require('discord.js'),
   IRC = require('irc-framework'),
   Cleverbot = require('cleverbot-node'),
   services = require('./services.js'),
-  log = console.log,
-  loadState = require('./utils/load-state.js')
+  log = console.log
 ) {
 
   // Log unhandled promise rejections
   process.on('unhandledRejection', rej => log(rej, 'Promise Rejection'))
 
   dotenv.config()
-  await loadState(config)
 
   if (env.DISCORD_TOKEN) {
     services.discord = new DiscordJS.Client()

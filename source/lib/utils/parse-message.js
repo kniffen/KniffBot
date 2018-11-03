@@ -1,4 +1,10 @@
-function parseMessage(serviceID, data) {
+function parseMessage(
+  serviceID,
+  data,
+  env = process.env,
+  services = require('../services.js')
+) {
+  
   let message
 
   switch (serviceID) {
@@ -9,7 +15,10 @@ function parseMessage(serviceID, data) {
         id: data.id,
         timestamp: data.createdTimestamp,
         author: data.author,
-        fullMessage: data
+        fullMessage: data,
+        self: {
+          username: services.discord.user.username.toLowerCase()
+        }
       }
       break
 
@@ -20,7 +29,10 @@ function parseMessage(serviceID, data) {
         author: {
           username: data.ident
         },
-        timestamp: data.time
+        timestamp: data.time,
+        self: {
+          username: env.TWITCH_IRC_USERNAME
+        }
       }
       break
   }
