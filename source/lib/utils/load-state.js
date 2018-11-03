@@ -3,13 +3,10 @@ async function loadState(
   req = require,
   state = require('../state.js'),
   fs = require('fs'),
-  path = require('path'),
-  updateEvents = require('./update-events.js')
+  path = require('path')
 ) {
 
   Object.assign(state, config)
-
-  await updateEvents()
 
   fs.readdirSync(path.resolve(__dirname, '../commands'))
     .forEach(filename => {

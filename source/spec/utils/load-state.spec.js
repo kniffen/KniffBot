@@ -34,9 +34,7 @@ describe('utils/loadState()', () => {
     resolve: () => undefined
   }
 
-  const updateEvents = chai.spy()
-
-  loadState(config, req, state, fs, path, updateEvents)
+  loadState(config, req, state, fs, path)
 
   it('should load config.json into the state', () => {
     expect(state).to.deep.equal({
@@ -55,7 +53,5 @@ describe('utils/loadState()', () => {
         baz: 'foobar'
       }
     })
-
-    expect(updateEvents).to.have.been.called()
   })
 })

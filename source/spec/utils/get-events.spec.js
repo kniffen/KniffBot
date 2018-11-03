@@ -1,15 +1,11 @@
 const { expect } = require('chai')
-const updateEvents = require('../../lib/utils/update-events.js')
+const getEvents = require('../../lib/utils/get-events.js')
 
-describe('utils/updateEvents()', () => {
+describe('utils/getEvents()', () => {
 
   const env = {
     GOOGLE_CALENDAR_ID: '',
     GOOGLE_CALENDAR_APIKEY: ''
-  }
-
-  const state = {
-    events: []
   }
 
   const fetch = async () => ({
@@ -42,11 +38,11 @@ describe('utils/updateEvents()', () => {
     }
   }
 
-  it('should update the state with new events', async () => {
+  it('should get a parsed list of events', async () => {
 
-    await updateEvents(env, state, fetch, Date)
+    const events = await getEvents(env, fetch, Date)
 
-    expect(state.events).to.deep.equal([
+    expect(events).to.deep.equal([
       {
         timestamp: 100,
         name: 'foobar',

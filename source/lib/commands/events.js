@@ -2,15 +2,15 @@ async function events(
   message, 
   state = require('../state.js'),
   moment = require('moment-timezone'),
-  updateEvents = require('../utils/update-events.js')
+  getEvents = require('../utils/get-events.js')
 ) {
 
-  await updateEvents()
+  const eventsArr = await getEvents()
 
   message.output = 'Upcoming events:\n'
 
   message.output += 
-    state.events
+    eventsArr
       .filter(event => event.timestamp > message.timestamp)
       .map(event => `\n- ${moment(event.timestamp).tz(state.timezone).format(state.timeformat)}\n${event.name}\n${event.description || ''}`)
       .join('\n')

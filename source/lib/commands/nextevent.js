@@ -1,23 +1,22 @@
 async function nextEvent(
-  message, 
-  state = require('../state.js'),
-  updateEvents = require('../utils/update-events.js')
+  message,
+  getEvents = require('../utils/get-events.js')
 ) {
 
-  await updateEvents()
+  const eventsArr = await getEvents()
+  const events    = eventsArr.filter(event => event.timestamp >= message.timestamp)
 
-  if (!state.events.length) {
+  if (!events.length) {
     message.output = 'There are currently no scheduled events'
   
   } else {
-    const event = state.events[0]
-    const remaining = Math.floor((event.timestamp - message.timestamp) / 60000)
+    const remaining = Math.floor(events[0].timestamp - message.timestamp)
 
     const days = Math.floor(remaining / 1440)
     const hrs = Math.floor((remaining % 1440) /60)
     const min = Math.floor((remaining % 1440) % 60)
 
-    message.output = `${event.name} starts in ${days ? days+'d ' : ''}${hrs ? hrs+'h ' : ''}${min}m\n${event.description}\n${event.location}`
+    message.output = `${events[0].name} starts in ${days ? days+'d ' : ''}${hrs ? hrs+'h ' : ''}${min}m\n${events[0].description}\n${events[0].location}`
 
   }
 
