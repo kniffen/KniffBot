@@ -1,8 +1,0 @@
-{
-  "timezone": "Europe/Berlin",
-  "timeformat": "D MMM, YYYY @ HH:mm(h:mm A) z",
-  "commands": {
-    "twitch": "https://www.twitch.tv/kniffen",
-    "twitter": "https://twitter.com/Kniffen"
-  }
-}
