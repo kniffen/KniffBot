@@ -76,8 +76,8 @@ export default async function weather(message, bot) {
       message.output.addField("Temp", `${current.temperature}°C/${Math.floor(current.temperature*1.8+32)}°F`, true)
       message.output.addField("Feels like", `${current.feelslike}°C/${Math.floor(current.feelslike*1.8+32)}°F`, true)
       
-      const windKph = parseInt(current.windspeed.split(' ').shift())
-      message.output.addField("Wind", `${Math.round(windKph * 0.277778)}m/s or ${Math.round(windKph * 0.621371)}mph ${current.winddisplay.split(' ').pop()}`, true)
+      const [ windKph, windUnit, windDirection ] = current.winddisplay.match(/\d+|km\/h|\w+/g)
+      message.output.addField("Wind", `${Math.round(windKph * 0.277778)}m/s or ${Math.round(windKph * 0.621371)}mph ${windDirection || ''}`, true)
 
       message.output.addField(`${forecast[1].day} forecast`, forecast[1].skytextday)
       message.output.addField("Temp low", `${forecast[1].low}°C/${Math.floor(forecast[1].low*1.8+32)}°F`, true)

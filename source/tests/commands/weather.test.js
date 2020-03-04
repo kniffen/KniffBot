@@ -25,35 +25,7 @@ describe("commands/weather()", function() {
     ]
   }
 
-  const weatherData = [
-    {
-      location: {
-        name: "FooBar"
-      },
-      current: {
-        day:             "foo",
-        observationtime: "bar",
-        skytext:         "baz",
-        imageUrl:        "foo.bar",
-        windspeed:       "64 km/h",
-        winddisplay:     "0 km/h southeast",
-        temperature:     16,
-        feelslike:       0,
-      },
-      forecast: [
-        {},
-        {
-          day:        "qux",
-          skytextday: "quux",
-          low:        -20,
-          high:       30,
-          precip:     "50"
-        }
-      ]
-    }
-  ]
-
-  let discordResult
+  let weatherData, discordResult
 
   before(function() {
     sinon.stub(weatherJS, "find").callsFake((input, cb) => {cb(undefined, weatherData)})
@@ -65,6 +37,34 @@ describe("commands/weather()", function() {
 
   beforeEach(function() {
     weatherJS.find.resetHistory()
+
+    weatherData = [
+      {
+        location: {
+          name: "FooBar"
+        },
+        current: {
+          day:             "foo",
+          observationtime: "bar",
+          skytext:         "baz",
+          imageUrl:        "foo.bar",
+          windspeed:       "0 km/h",
+          winddisplay:     "64 km/h southeast",
+          temperature:     16,
+          feelslike:       0,
+        },
+        forecast: [
+          {},
+          {
+            day:        "qux",
+            skytextday: "quux",
+            low:        -20,
+            high:       30,
+            precip:     "50"
+          }
+        ]
+      }
+    ]
 
     discordResult = {
       author: {
@@ -142,27 +142,40 @@ describe("commands/weather()", function() {
   })
 
   it("should output a weather report for a location", async function() {
-    const message1 = await weatherCmd.default({service: "foobar",  command: {args: []}}, bot)
-    const message2 = await weatherCmd.default({service: "foobar",  command: {args: ["bar", "foo"]}}, bot)
-    const message3 = await weatherCmd.default({service: "discord", command: {args: ["bar", "foo"]}}, bot)
+    const messages = []
+
+    messages[0] = await weatherCmd.default({service: "foobar",  command: {args: []}}, bot)
+    messages[1] = await weatherCmd.default({service: "foobar",  command: {args: ["bar", "foo"]}}, bot)
+    messages[2] = await weatherCmd.default({service: "discord", command: {args: ["bar", "foo"]}}, bot)
+
+    weatherData[0].current.winddisplay = "64 km/h"
+    messages[3] = await weatherCmd.default({service: "discord", command: {args: ["bar", "foo"]}}, bot)
 
     assert.deepEqual(weatherJS.find.args[0][0], {search: "bar foo", degreeType: 'C'})
     
-    assert.deepEqual(message1, {
+    assert.deepEqual(messages[0], {
       service: "foobar",
       command: {args: []},
       isReply: true,
       output:  "Something went wrong 😱\nDo `??help weather` for usage.",
     })
 
-    assert.deepEqual(message2, {
+    assert.deepEqual(messages[1], {
       service: "foobar",
       command: {args: ["bar", "foo"]},
       isReply: false,
       output:  "Weather report for FooBar\nbaz 16°C/60°F",
     })
     
-    assert.deepEqual(message3, {
+    assert.deepEqual(messages[2], {
+      service: "discord",
+      command: {args: ["bar", "foo"]},
+      isReply: false,
+      output:  discordResult
+    })
+
+    discordResult.fields[3].value = "18m/s or 40mph "
+    assert.deepEqual(messages[3], {
       service: "discord",
       command: {args: ["bar", "foo"]},
       isReply: false,
