@@ -46,7 +46,7 @@ describe("commands/commands()", function() {
           {
             inline: true,
             name: "info",
-            value: "??commands\n??time\n??weather\n??wolfram"
+            value: "??commands\n??covid19\n??time\n??weather\n??wolfram"
           },
           {
             inline: true,

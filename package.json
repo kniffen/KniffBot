@@ -1,8 +1,8 @@
 {
   "name": "kniffbot",
-  "version": "0.4.1-beta",
+  "version": "0.4.2-beta",
   "description": "A bot aimed to work with multiple APIs at once, but mainly Discord",
-  "main": "index.js",
+  "main": "dist/bot/index.js",
   "scripts": {
     "test": "NODE_ENV=test npx gulp test",
     "dev": "NODE_ENV=test npx gulp dev"

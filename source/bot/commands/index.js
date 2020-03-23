@@ -5,6 +5,7 @@
 import * as cat       from "./cat"
 import * as comic     from "./comic"
 import * as commands  from "./commands"
+import * as covid19   from "./covid19"
 import * as dog       from "./dog"
 import * as eightBall from "./eightBall"
 import * as help      from "./help"
@@ -21,6 +22,7 @@ export default [
   cat,
   comic,
   commands,
+  covid19,
   dog,
   eightBall,
   help,

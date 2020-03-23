@@ -35,6 +35,13 @@ describe("commands", function() {
         default: "function"
       },
       {
+        id: "covid19",
+        category: "info",
+        services: ["discord"],
+        args: [[], ["country/state"]],
+        default: "function"
+      },
+      {
         id: "dog",
         category: "fun",
         services: ["discord", "twitchIRC"],
