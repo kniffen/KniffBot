@@ -148,8 +148,7 @@ describe("commands/covid19()", function() {
             active:      3000000,
             deaths:      4000000,
             todayDeaths: 5000000,
-            recovered:   6000000,
-            todayCases:  7000000,
+            todayCases:  6000000,
           }]
         } else {
           return {}
@@ -242,6 +241,11 @@ describe("commands/covid19()", function() {
           inline: true
         },
         {
+          name:  "Critical",
+          value: "Unknown",
+          inline: true
+        },
+        {
           name:  "Deaths",
           value: "4,000,000",
           inline: true
@@ -253,12 +257,17 @@ describe("commands/covid19()", function() {
         },
         {
           name:  "Recovered",
-          value: "6,000,000",
+          value: "Unknown",
           inline: true
         },
         {
           name:  "Cases today",
-          value: "7,000,000",
+          value: "6,000,000",
+          inline: true
+        },
+        {
+          name:  "Cases per million",
+          value: "Unknown",
           inline: true
         },
       ],
