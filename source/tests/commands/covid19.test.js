@@ -130,17 +130,29 @@ describe("commands/covid19()", function() {
             updated:   1000000,
           }
         } else if (url == "https://corona.lmao.ninja/countries") {
-          return [{
-            country:              "FOO",
-            cases:              2000000,
-            active:             3000000,
-            critical:           4000000,
-            deaths:             5000000,
-            todayDeaths:        6000000,
-            recovered:          7000000,
-            todayCases:         8000000,
-            casesPerOneMillion: 9000000
-          }]
+          return [
+            {
+              country:              "FOO",
+              cases:              2000000,
+              active:             3000000,
+              critical:           4000000,
+              deaths:             5000000,
+              todayDeaths:        6000000,
+              recovered:          7000000,
+              todayCases:         8000000,
+              casesPerOneMillion: 9000000,
+              countryInfo: {
+                flag: "foo.flag"
+              }
+            },
+            {
+              country: "US",
+              countryInfo: {
+                iso3: "USA",
+                flag: "bar.flag"
+              }
+            }
+          ]
         } else if (url == "https://corona.lmao.ninja/states") {
           return [{
             state:     "BAR BAZ",
@@ -168,7 +180,7 @@ describe("commands/covid19()", function() {
     assert.deepEqual(messages[0].output, deepCopy(richEmbed, {
       author: {
         url:      "https://worldometers.info/coronavirus",
-        icon_url: null,
+        icon_url: "foo.flag",
         name:     "Latest COVID-19 stats for FOO"
       },
       color:       0xFF0000,
@@ -224,7 +236,7 @@ describe("commands/covid19()", function() {
     assert.deepEqual(messages[1].output, deepCopy(richEmbed, {
       author: {
         url:      "https://worldometers.info/coronavirus",
-        icon_url: null,
+        icon_url: "bar.flag",
         name:     "Latest COVID-19 stats for BAR BAZ"
       },
       color:       0xFF0000,

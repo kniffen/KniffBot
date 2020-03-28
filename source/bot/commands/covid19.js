@@ -51,10 +51,12 @@ export default async function covid19Cmd(message, bot) {
     if (!location) location = states.find(state      => state.state.toLowerCase()     == message.command.args.join(' ').toLowerCase())
     if (!location) return message
 
+    const countryInfo = location.countryInfo || countries.find(country => country.countryInfo.iso3 == "USA").countryInfo
+
     message.output = new RichEmbed()
   
     message.output.setColor(bot.settings.color)
-    message.output.setAuthor(`Latest COVID-19 stats for ${location.country || location.state}`, null, 'https://worldometers.info/coronavirus')
+    message.output.setAuthor(`Latest COVID-19 stats for ${location.country || location.state}`, countryInfo.flag, 'https://worldometers.info/coronavirus')
 
     message.output.addField("Cases",             location.cases?.toLocaleString()              || "Unknown", true)
     message.output.addField("Active",            location.active?.toLocaleString()             || "Unknown", true)
