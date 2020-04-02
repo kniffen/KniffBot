@@ -132,15 +132,34 @@ describe("commands/covid19()", function() {
         } else if (url == "https://corona.lmao.ninja/countries") {
           return [
             {
+              country:                "FOO",
+              cases:                2000000,
+              active:               3000000,
+              critical:             4000000,
+              deaths:               5000000,
+              todayDeaths:          6000000,
+              recovered:            7000000,
+              todayCases:           8000000,
+              casesPerOneMillion:   9000000,
+              deathsPerOneMillion: 10000000,
+              countryInfo: {
+                flag: "foo.flag"
+              }
+            },
+            {
+              country: "US",
+              countryInfo: {
+                iso3: "USA",
+                flag: "bar.flag"
+              }
+            }
+          ]
+        } else if (url == "https://corona.lmao.ninja/yesterday") {
+          return [
+            {
               country:              "FOO",
-              cases:              2000000,
-              active:             3000000,
-              critical:           4000000,
-              deaths:             5000000,
-              todayDeaths:        6000000,
-              recovered:          7000000,
-              todayCases:         8000000,
-              casesPerOneMillion: 9000000,
+              todayDeaths:        11000000,
+              todayCases:         12000000,
               countryInfo: {
                 flag: "foo.flag"
               }
@@ -162,8 +181,6 @@ describe("commands/covid19()", function() {
             todayDeaths: 5000000,
             todayCases:  6000000,
           }]
-        } else {
-          return {}
         }
       }
     }))
@@ -175,7 +192,8 @@ describe("commands/covid19()", function() {
     
     assert.equal(fetch.default.args[0][0], "https://corona.lmao.ninja/all")
     assert.equal(fetch.default.args[1][0], "https://corona.lmao.ninja/countries")
-    assert.equal(fetch.default.args[2][0], "https://corona.lmao.ninja/states")
+    assert.equal(fetch.default.args[2][0], "https://corona.lmao.ninja/yesterday")
+    assert.equal(fetch.default.args[3][0], "https://corona.lmao.ninja/states")
 
     assert.deepEqual(messages[0].output, deepCopy(richEmbed, {
       author: {
@@ -192,6 +210,16 @@ describe("commands/covid19()", function() {
           inline: true
         },
         {
+          name:  "Cases today",
+          value: "8,000,000",
+          inline: true
+        },
+        {
+          name:  "Cases yesterday",
+          value: "12,000,000",
+          inline: true
+        },
+        {
           name:  "Active",
           value: "3,000,000",
           inline: true
@@ -199,6 +227,11 @@ describe("commands/covid19()", function() {
         {
           name:  "Critical",
           value: "4,000,000",
+          inline: true
+        },
+        {
+          name:  "Recovered",
+          value: "7,000,000",
           inline: true
         },
         {
@@ -212,18 +245,23 @@ describe("commands/covid19()", function() {
           inline: true
         },
         {
-          name:  "Recovered",
-          value: "7,000,000",
-          inline: true
-        },
-        {
-          name:  "Cases today",
-          value: "8,000,000",
+          name:  "Deaths yesterday",
+          value: "11,000,000",
           inline: true
         },
         {
           name:  "Cases per million",
           value: "9,000,000",
+          inline: true
+        },
+        {
+          name:  "Deaths per million",
+          value: "10,000,000",
+          inline: true
+        },
+        {
+          name:  "\u200b",
+          value: "\u200b",
           inline: true
         },
       ],
@@ -248,13 +286,28 @@ describe("commands/covid19()", function() {
           inline: true
         },
         {
+          name:  "Cases today",
+          value: "6,000,000",
+          inline: true
+        },
+        {
+          name:  "Cases yesterday",
+          value: "\u200b",
+          inline: true
+        },
+        {
           name:  "Active",
           value: "3,000,000",
           inline: true
         },
         {
           name:  "Critical",
-          value: "Unknown",
+          value: "\u200b",
+          inline: true
+        },
+        {
+          name:  "Recovered",
+          value: "\u200b",
           inline: true
         },
         {
@@ -268,18 +321,23 @@ describe("commands/covid19()", function() {
           inline: true
         },
         {
-          name:  "Recovered",
-          value: "Unknown",
-          inline: true
-        },
-        {
-          name:  "Cases today",
-          value: "6,000,000",
+          name:  "Deaths yesterday",
+          value: "\u200b",
           inline: true
         },
         {
           name:  "Cases per million",
-          value: "Unknown",
+          value: "\u200b",
+          inline: true
+        },
+        {
+          name:  "Deaths per million",
+          value: "\u200b",
+          inline: true
+        },
+        {
+          name:  "\u200b",
+          value: "\u200b",
           inline: true
         },
       ],
