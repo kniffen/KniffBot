@@ -148,6 +148,15 @@ describe("commands/covid19()", function() {
             },
             {
               country: "US",
+              cases:                200000,
+              active:               300000,
+              critical:             400000,
+              deaths:               500000,
+              todayDeaths:          600000,
+              recovered:            700000,
+              todayCases:           800000,
+              casesPerOneMillion:   900000,
+              deathsPerOneMillion: 1000000,
               countryInfo: {
                 iso3: "USA",
                 flag: "bar.flag"
@@ -157,15 +166,17 @@ describe("commands/covid19()", function() {
         } else if (url == "https://corona.lmao.ninja/yesterday") {
           return [
             {
-              country:              "FOO",
-              todayDeaths:        11000000,
-              todayCases:         12000000,
+              country:     "FOO",
+              todayDeaths: 11000000,
+              todayCases:  12000000,
               countryInfo: {
                 flag: "foo.flag"
               }
             },
             {
-              country: "US",
+              country:     "US",
+              todayDeaths: 1100000,
+              todayCases:  1200000,
               countryInfo: {
                 iso3: "USA",
                 flag: "bar.flag"
@@ -346,7 +357,80 @@ describe("commands/covid19()", function() {
         text:     "Data provided by worldometers.info"
       }
     }))
-
-    assert.deepEqual(messages[2], {command: { args: ["Qux"] }})
+    assert.deepEqual(messages[2].output, deepCopy(richEmbed, {
+      author: {
+        url:      "https://worldometers.info/coronavirus",
+        icon_url: "bar.flag",
+        name:     "Latest COVID-19 stats for US"
+      },
+      color:       0xFF0000,
+      timestamp:   1000000,
+      fields: [
+        {
+          name:  "Cases",
+          value: "200,000",
+          inline: true
+        },
+        {
+          name:  "Cases today",
+          value: "800,000",
+          inline: true
+        },
+        {
+          name:  "Cases yesterday",
+          value: "1,200,000",
+          inline: true
+        },
+        {
+          name:  "Active",
+          value: "300,000",
+          inline: true
+        },
+        {
+          name:  "Critical",
+          value: "400,000",
+          inline: true
+        },
+        {
+          name:  "Recovered",
+          value: "700,000",
+          inline: true
+        },
+        {
+          name:  "Deaths",
+          value: "500,000",
+          inline: true
+        },
+        {
+          name:  "Deaths today",
+          value: "600,000",
+          inline: true
+        },
+        {
+          name:  "Deaths yesterday",
+          value: "1,100,000",
+          inline: true
+        },
+        {
+          name:  "Cases per million",
+          value: "900,000",
+          inline: true
+        },
+        {
+          name:  "Deaths per million",
+          value: "1,000,000",
+          inline: true
+        },
+        {
+          name:  "\u200b",
+          value: "\u200b",
+          inline: true
+        },
+      ],
+      footer: {
+        icon_url: undefined,
+        text:     "Data provided by worldometers.info"
+      }
+    }))
   })
 })

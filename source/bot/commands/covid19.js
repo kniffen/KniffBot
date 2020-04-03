@@ -64,10 +64,10 @@ export default async function covid19Cmd(message, bot) {
     message.output.setTimestamp(total.updated)
     message.output.setFooter("Data provided by worldometers.info/coronavirus\nNews provided by reddit.com/live/14d816ty1ylvo")
   
-  } else if ( !(country.countryInfo.iso3 == "USA" && !state) ) {
+  } else {
 
-    const location          = state          || country
-    const locationYesterday = stateYesterday || countryYesterday
+    const location          = state || country
+    const locationYesterday = state ? stateYesterday : countryYesterday
 
     message.output = new RichEmbed()
   
