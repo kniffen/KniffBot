@@ -16,25 +16,22 @@ export default async function covid19Cmd(message, bot) {
 
   if (message.command.args.length > 0) {
     const data = await Promise.all([
-      fetch("https://corona.lmao.ninja/all")?.then(res => res.json()),
-      fetch("https://corona.lmao.ninja/countries")?.then(res => res.json()),
-      fetch("https://corona.lmao.ninja/yesterday")?.then(res => res.json()),
-      fetch("https://corona.lmao.ninja/states")?.then(res => res.json())
+      fetch("https://corona.lmao.ninja/v2/all")?.then(res => res.json()),
+      fetch("https://corona.lmao.ninja/v2/countries")?.then(res => res.json()),
+      fetch("https://corona.lmao.ninja/v2/states")?.then(res => res.json())
     ])
 
-    total            = data[0]
-    country          = data[1].find(country => country.country.toLowerCase() == message.command.args.join(' ').toLowerCase())
-    countryYesterday = data[2].find(country => country.country.toLowerCase() == message.command.args.join(' ').toLowerCase())
+    total   = data[0]
+    country = data[1].find(country => country.country.toLowerCase() == message.command.args.join(' ').toLowerCase())
 
     if (!country) {
-      country          = data[1].find(country => country.countryInfo.iso3 == "USA")
-      countryYesterday = data[2].find(country => country.countryInfo.iso3 == "USA")
-      state            = data[3].find(state   => state.state.toLowerCase() == message.command.args.join(' ').toLowerCase())
+      country = data[1].find(country => country.countryInfo.iso3 == "USA")
+      state   = data[2].find(state   => state.state.toLowerCase() == message.command.args.join(' ').toLowerCase())
     }
 
   } else {
     const data = await Promise.all([
-      fetch("https://corona.lmao.ninja/all")?.then(res => res.json()),
+      fetch("https://corona.lmao.ninja/v2/all")?.then(res => res.json()),
       fetch("https://www.reddit.com/live/14d816ty1ylvo/.json")?.then(res => res.json())
     ])
 
@@ -67,28 +64,27 @@ export default async function covid19Cmd(message, bot) {
   } else {
 
     const location          = state || country
-    const locationYesterday = state ? stateYesterday : countryYesterday
 
     message.output = new RichEmbed()
   
     message.output.setColor(bot.settings.color)
     message.output.setAuthor(`Latest COVID-19 stats for ${location.country || location.state}`, country.countryInfo.flag, 'https://worldometers.info/coronavirus')
 
-    message.output.addField("Cases",              location?.cases?.toLocaleString()                || "\u200b", true)
-    message.output.addField("Cases today",        location?.todayCases?.toLocaleString()           || "\u200b", true)
-    message.output.addField("Cases yesterday",    locationYesterday?.todayCases?.toLocaleString()  || "\u200b", true)
-
     message.output.addField("Active",             location?.active?.toLocaleString()               || "\u200b", true)
     message.output.addField("Critical",           location?.critical?.toLocaleString()             || "\u200b", true)
     message.output.addField("Recovered",          location?.recovered?.toLocaleString()            || "\u200b", true)
+
+    message.output.addField("Cases",              location?.cases?.toLocaleString()                || "\u200b", true)
+    message.output.addField("Cases today",        location?.todayCases?.toLocaleString()           || "\u200b", true)
+    message.output.addField("Cases per million",  location?.casesPerOneMillion?.toLocaleString()   || "\u200b", true)
     
     message.output.addField("Deaths",             location?.deaths?.toLocaleString()               || "\u200b", true)
     message.output.addField("Deaths today",       location?.todayDeaths?.toLocaleString()          || "\u200b", true)
-    message.output.addField("Deaths yesterday",   locationYesterday?.todayDeaths?.toLocaleString() || "\u200b", true)
-
-    message.output.addField("Cases per million",  location?.casesPerOneMillion?.toLocaleString()   || "\u200b", true)
     message.output.addField("Deaths per million", location?.deathsPerOneMillion?.toLocaleString()  || "\u200b", true)
+
+    message.output.addField("Tests",              location?.tests?.toLocaleString()   || "\u200b", true)
     message.output.addBlankField(true)
+    message.output.addField("Tests per million",  location?.testsPerOneMillion?.toLocaleString()   || "\u200b", true)
 
     message.output.setTimestamp(total.updated)
     message.output.setFooter("Data provided by worldometers.info")
