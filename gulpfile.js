@@ -21,7 +21,11 @@ function build() {
         ]
       ]
     }))
-    .pipe(sourcemaps.write())
+    .pipe(sourcemaps.write('.', {
+      sourceRoot: function (file) {
+        return file.cwd + '/src';
+      }
+    }))
     .pipe(gulp.dest("dist"))
 }
 
@@ -37,7 +41,6 @@ function test() {
 
 function dev() {
   gulp.watch("source/**/*.js", {cwd: "./"}, gulp.series(build, test))
-  //gulp.watch("tests/**/*",     {cwd: "./"}, test)
 }
 
 module.exports.build = build
