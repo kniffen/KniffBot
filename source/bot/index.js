@@ -59,7 +59,7 @@ try {
   if (process.env.DISCORD_TOKEN) {
     bot.discord = new DiscordJS.Client()
 
-    bot.discord.on("error",        (error) => errorEventHandler("discord", message))  
+    bot.discord.on("error",        (error) => errorEventHandler("discord", error))  
     bot.discord.on("ready",        ()      => connectedEventHandler("discord"))  
     bot.discord.on("disconnected", ()      => disconnectedEventHandler("discord", bot))  
     bot.discord.on("message",      (data)  => messageEventHandler("discord", data, bot))
