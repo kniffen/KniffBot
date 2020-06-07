@@ -34,9 +34,12 @@ export default async function messageEventHandeler(service, data, bot) {
 
   } else if (cleverbot && (message.isMentioned || message.isDM)) {
 
-    const cleanInput = message.cleanInput.split(' ')
-                              .filter(word => word.toLowerCase() != `@${message.self.username.toLowerCase()}`)
-                              .join(' ')
+    let cleanInput = message.cleanInput.slice().toLowerCase()
+
+    while (cleanInput.includes(`@${message.self.username.toLowerCase()}`)) {
+      cleanInput = cleanInput.replace(`@${message.self.username.toLowerCase()}`, '')
+      if (cleanInput[0] == ' ') cleanInput = cleanInput.substr(1)
+    }
 
     message.isReply = true
     

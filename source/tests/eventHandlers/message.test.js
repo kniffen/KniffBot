@@ -86,7 +86,7 @@ describe("eventHandlers.message()", function() {
   describe("mentions", async function() {
     const bot = {
       cleverbot: {
-        write: sinon.spy((input, cb) => cb({message: "foo bar baz"}))
+        write: sinon.spy((input, cb) => cb({message: "foo bar corge"}))
       }
     }
 
@@ -104,41 +104,41 @@ describe("eventHandlers.message()", function() {
 
     it("should reply to mentions and direct messages with cleverbot", async function() {
       parseMessage.default.callsFake(() => ({
-        cleanInput: "@fOo foo bar?",
+        cleanInput: "@Foo Bar Baz qux quux?",
         isMentioned: true,
-        self: {username: "Foo"}
+        self: {username: "Foo bar baz"}
       }))
 
       await messageEventHandler("foobar", "foo", bot)
 
       parseMessage.default.callsFake(() => ({
-        cleanInput: "@fOo foo bar?",
+        cleanInput: "@Foo Bar Baz qux quux?",
         isDM: true,
-        self: {username: "Foo"}
+        self: {username: "Foo bar baz"}
       }))
 
       await messageEventHandler("foobar", "foo", bot)
 
-      assert.equal(bot.cleverbot.write.args[0][0], "foo bar?")
-      assert.equal(bot.cleverbot.write.args[1][0], "foo bar?")
+      assert.equal(bot.cleverbot.write.args[0][0], "qux quux?")
+      assert.equal(bot.cleverbot.write.args[1][0], "qux quux?")
       assert.deepEqual(sendMessage.default.args, [
         [
           {
-            cleanInput:  "@fOo foo bar?",
-            output:      "foo bar baz",
+            cleanInput:  "@Foo Bar Baz qux quux?",
+            output:      "foo bar corge",
             isMentioned: true,
             isReply:     true,
-            self:        {username: "Foo"}
+            self:        {username: "Foo bar baz"}
           },
           bot
         ],
         [
           {
-            cleanInput:  "@fOo foo bar?",
-            output:      "foo bar baz",
+            cleanInput:  "@Foo Bar Baz qux quux?",
+            output:      "foo bar corge",
             isDM:        true,
             isReply:     true,
-            self:        {username: "Foo"}
+            self:        {username: "Foo bar baz"}
           },
           bot
         ]
@@ -155,27 +155,27 @@ describe("eventHandlers.message()", function() {
       }
 
       parseMessage.default.callsFake(() => ({
-        cleanInput: "@fOo foo bar?",
+        cleanInput: "@Foo Bar Baz qux quux?",
         isMentioned: true,
-        self: {username: "Foo"}
+        self: {username: "Foo bar baz"}
       }))
 
       await messageEventHandler("foobar", "foo", botFails)
 
       assert.deepEqual(sendMessage.default.args, [[{
-        cleanInput:  "@fOo foo bar?",
+        cleanInput:  "@Foo Bar Baz qux quux?",
         output:      "I'm sorry, can you repeat that?",
         isMentioned: true,
         isReply:     true,
-        self:        {username: "Foo"}
+        self:        {username: "Foo bar baz"}
       }, botFails]])
     })
 
     it("should handle cleverbot not existing", async function() {
       parseMessage.default.callsFake(() => ({
-        cleanInput: "@fOo foo bar?",
+        cleanInput: "@Foo Bar Baz qux quux?",
         isMentioned: true,
-        self: {username: "Foo"}
+        self: {username: "Foo bar baz"}
       }))
 
       await messageEventHandler("foobar", "foo", {})
