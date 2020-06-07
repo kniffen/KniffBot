@@ -37,21 +37,6 @@ describe("commands/covid19()", function() {
             deaths:    3000000,
             recovered: 4000000
           }
-        } else if (url == "https://www.reddit.com/live/14d816ty1ylvo/.json") {
-          return {
-            data: {
-              children: [
-                {},
-                {data: {mobile_embeds: []}},
-                {data: {mobile_embeds: [{title: "foo",  description: "foobar",  original_url: "foobarbaz"}]}},
-                {data: {mobile_embeds: [{title: "bar",  description: "barbar",  original_url: "barbarbaz"}]}},
-                {data: {mobile_embeds: [{title: "baz",  description: "bazbar",  original_url: "bazbarbaz"}]}},
-                {data: {mobile_embeds: [{title: "qux",  description: "quxbar",  original_url: "quxbarbaz"}]}},
-                {data: {mobile_embeds: [{title: "quux", description: "quuxbar", original_url: "quuxbarbaz"}]}},
-                {data: {mobile_embeds: [{title: "quuz", description: "quuzbar", original_url: "quuzbarbaz"}]}}
-              ]
-            }
-          }
         } else {
           return {}
         }
@@ -63,13 +48,12 @@ describe("commands/covid19()", function() {
     }, bot)
 
     assert.equal(fetch.default.args[0][0], "https://corona.lmao.ninja/v2/all")
-    assert.equal(fetch.default.args[1][0], "https://www.reddit.com/live/14d816ty1ylvo/.json")
 
     assert.deepEqual(message.output, deepCopy(richEmbed, {
       author: {
         url:      undefined,
         icon_url: undefined,
-        name: "Latest COVID-19 stats and news"
+        name: "Latest COVID-19 global stats"
       },
       color:       0xFF0000,
       timestamp:   1000000,
@@ -88,36 +72,11 @@ describe("commands/covid19()", function() {
           name:  "Recovered",
           value: "4,000,000",
           inline: true
-        },
-        {
-          name:  "foo",
-          value: "foobar\nfoobarbaz",
-          inline: false
-        },
-        {
-          name:  "bar",
-          value: "barbar\nbarbarbaz",
-          inline: false
-        },
-        {
-          name:  "baz",
-          value: "bazbar\nbazbarbaz",
-          inline: false
-        },
-        {
-          name:  "qux",
-          value: "quxbar\nquxbarbaz",
-          inline: false
-        },
-        {
-          name:  "quux",
-          value: "quuxbar\nquuxbarbaz",
-          inline: false
         }
       ],
       footer: {
         icon_url: undefined,
-        text:     "Data provided by worldometers.info/coronavirus\nNews provided by reddit.com/live/14d816ty1ylvo"
+        text:     "Data provided by worldometers.info/coronavirus"
       }
     }))
   })
@@ -143,7 +102,7 @@ describe("commands/covid19()", function() {
               casesPerOneMillion:   9000000,
               deathsPerOneMillion: 10000000,
               tests:               11000000,
-              testsPerOneMillion:     12000000,
+              testsPerOneMillion:  12000000,
               countryInfo: {
                 flag: "foo.flag"
               }
@@ -263,7 +222,7 @@ describe("commands/covid19()", function() {
       ],
       footer: {
         icon_url: undefined,
-        text:     "Data provided by worldometers.info"
+        text:     "Data provided by worldometers.info/coronavirus"
       }
     }))
 
@@ -339,7 +298,7 @@ describe("commands/covid19()", function() {
       ],
       footer: {
         icon_url: undefined,
-        text:     "Data provided by worldometers.info"
+        text:     "Data provided by worldometers.info/coronavirus"
       }
     }))
     assert.deepEqual(messages[2].output, deepCopy(richEmbed, {
@@ -414,7 +373,7 @@ describe("commands/covid19()", function() {
       ],
       footer: {
         icon_url: undefined,
-        text:     "Data provided by worldometers.info"
+        text:     "Data provided by worldometers.info/coronavirus"
       }
     }))
   })
