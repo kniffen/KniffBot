@@ -5,10 +5,11 @@
 
 import fetch from "node-fetch"
 
-export const id       = "cat"
-export const category = "fun"
-export const services = ["discord", "twitchIRC"]
-export const args     = [[]]
+export const id           = "cat"
+export const category     = "fun"
+export const services     = ["discord", "twitchIRC"]
+export const args         = [[]]
+export const isRestricted = false
 
 export default async function catCmd(message) {
 
