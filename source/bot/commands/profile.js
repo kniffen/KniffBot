@@ -6,7 +6,7 @@
 import DiscordJS from "discord.js"
 import moment    from "moment-timezone"
 
-import saveProfiles from "../utils/saveProfiles"
+import saveData from "../utils/saveData"
 
 export const id           = "profile"
 export const category     = "utility"
@@ -42,13 +42,13 @@ export default async function profile(message, bot) {
     return message 
   }
 
-  index = bot.profiles.findIndex(profile => profile.service == message.service && profile.id == user.id)
+  index = bot.data.profiles.findIndex(profile => profile.service == message.service && profile.id == user.id)
 
   // Create a user profile if one does not exist
   if (index < 0 && message.command?.args[0] != "remove") {
-    bot.profiles.push({id: user.id,service: message.service})
-    saveProfiles(bot)
-    index = bot.profiles.length - 1
+    bot.data.profiles.push({id: user.id,service: message.service})
+    saveData(bot.data)
+    index = bot.data.profiles.length - 1
   }
 
   if (message.command?.args[0] == "remove") {
@@ -57,29 +57,29 @@ export default async function profile(message, bot) {
     if (index < 0) return message
     
     if (prop) {
-      if (["id", "service"].includes(prop) || !bot.profiles[index][prop]) return message
-      delete bot.profiles[index][prop]
+      if (["id", "service"].includes(prop) || !bot.data.profiles[index][prop]) return message
+      delete bot.data.profiles[index][prop]
 
       message.output = `Your ${prop} has been removed`
       message.isReply = true
     } else {
-      bot.profiles.splice(index, 1)
+      bot.data.profiles.splice(index, 1)
       message.output = `Your profile has been removed`
       message.isReply = true
     }
 
-    saveProfiles(bot)
+    saveData(bot.data)
 
   } else if (message.command?.args[0] == "location") {
     if (!message.command.args[1]) {
-      message.output  = `Your current location is ${bot.profiles[index].location || "unknown"}`
+      message.output  = `Your current location is ${bot.data.profiles[index].location || "unknown"}`
       message.isReply = true
     } else {
       const args = message.command.args.slice()
       args.shift()
-      bot.profiles[index].location = args.join(' ')
-      saveProfiles(bot)
-      message.output  = `Your location is now set to ${bot.profiles[index].location}`
+      bot.data.profiles[index].location = args.join(' ')
+      saveData(bot.data)
+      message.output  = `Your location is now set to ${bot.data.profiles[index].location}`
       message.isReply = true
     }
 
@@ -89,7 +89,7 @@ export default async function profile(message, bot) {
     message.output = new DiscordJS.RichEmbed()
 
     message.output.setAuthor(`Profile for ${user.username}`, user.avatarURL)
-    message.output.setColor(bot.settings.color)
+    message.output.setColor(bot.data.settings.color)
 
     message.output.addField("Discriminator", '#'+user.discriminator, true)
     message.output.addField("Identifier",    user.id, true)
@@ -103,8 +103,8 @@ export default async function profile(message, bot) {
     if (roles.length > 0)
       message.output.addField("Roles", roles.join(", ") || ' ', true)
 
-    if (bot.profiles[index]?.location && message.isDM)
-      message.output.addField("Location", bot.profiles[index].location, true)
+    if (bot.data.profiles[index]?.location && message.isDM)
+      message.output.addField("Location", bot.data.profiles[index].location, true)
   }
 
   return message

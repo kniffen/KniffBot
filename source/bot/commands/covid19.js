@@ -33,7 +33,7 @@ export default async function covid19Cmd(message, bot) {
 
   message.output = new RichEmbed()
 
-  message.output.setColor(bot.settings.color)
+  message.output.setColor(bot.data.settings.color)
   message.output.setTimestamp(total.updated)
   message.output.setFooter("Data provided by worldometers.info/coronavirus")
 

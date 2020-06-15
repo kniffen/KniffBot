@@ -24,7 +24,7 @@ export default async function(message, bot) {
   let location
 
   if (message?.mentions?.length > 0) {
-    location = bot.profiles.find(profile => profile.service == message.service && profile.id == message.mentions[0].id)?.location
+    location = bot.data.profiles.find(profile => profile.service == message.service && profile.id == message.mentions[0].id)?.location
     if (!location) {
       message.output  = "I don't have a location set for that user"
       message.isReply = true
@@ -34,7 +34,7 @@ export default async function(message, bot) {
     location = message.command.args.join(' ')
 
   } else {
-    location = bot.profiles.find(profile => profile.service == message.service && profile.id == message.author.id)?.location
+    location = bot.data.profiles.find(profile => profile.service == message.service && profile.id == message.author.id)?.location
     if (!location) {
       message.output = `\`${moment.utc().format("LLLL z")}\``
     }

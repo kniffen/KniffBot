@@ -31,7 +31,7 @@ export default async function(message, bot) {
 
   message.output.setTitle("🤖 Bot statistics")
   message.output.setURL(pkg.homepage)
-  message.output.setColor(bot.settings.color)
+  message.output.setColor(bot.data.settings.color)
   
   message.output.addField(pkg.name, 'v' + pkg.version, true)
   message.output.addField("Uptime", formatTime(process.uptime()), true)

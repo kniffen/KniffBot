@@ -14,7 +14,7 @@ export const isRestricted = false
 export default async function wolfram(message, bot) {
 
   if (message.command.args.length <= 0) {
-    message.output = `Something went wrong 😱\nDo \`${bot.settings.prefix}help ${id}\` for usage.`
+    message.output = `Something went wrong 😱\nDo \`${bot.data.settings.prefix}help ${id}\` for usage.`
     return message
   }
 
@@ -26,7 +26,7 @@ export default async function wolfram(message, bot) {
     message.output = new DiscordJS.RichEmbed()
 
     message.output.setTitle(result.data.queryresult.pods[0].subpods[0].plaintext)
-    message.output.setColor(bot.settings.color)
+    message.output.setColor(bot.data.settings.color)
     message.output.setURL(result.data.queryresult.sources?.url)
 
     for (const pod of result.data.queryresult.pods.filter((pod, i) => i > 0)) {

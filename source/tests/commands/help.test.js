@@ -6,8 +6,10 @@ import * as helpCmd from "../../bot/commands/help"
 describe("commands/cat()", function() {
 
   const bot = {
-    settings: {
-      prefix: "??"
+    data: {
+      settings: {
+        prefix: "??"
+      }
     }
   }
 

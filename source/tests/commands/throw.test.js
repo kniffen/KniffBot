@@ -6,8 +6,10 @@ import * as throwCmd from "../../bot/commands/throw"
 describe("commands/throw()", function() {
 
   const bot = {
-    settings: {
-      prefix: "??"
+    data: {
+      settings: {
+        prefix: "??"
+      }
     },
     discord: {
       emojis: {

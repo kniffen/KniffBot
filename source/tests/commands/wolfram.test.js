@@ -7,9 +7,11 @@ import * as wolframCmd from "../../bot/commands/wolfram"
 describe("commands/wolfram()", function() {
 
   const bot = {
-    settings: {
-      prefix: "??",
-      color: 0xFF0000
+    data: {
+      settings: {
+        prefix: "??",
+        color: 0xFF0000
+      }
     },
     wolframAlpha: {}
   }

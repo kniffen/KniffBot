@@ -25,14 +25,14 @@ export default async function weather(message, bot) {
     let query, profile
 
     message.isReply = true
-    message.output  = `Something went wrong 😱\nDo \`${bot.settings.prefix}help ${id}\` for usage.`
+    message.output  = `Something went wrong 😱\nDo \`${bot.data.settings.prefix}help ${id}\` for usage.`
 
     if (!message?.mentions?.length && message?.command?.args.length) {
       query = message.command.args.join(' ')
 
     } else {
 
-      const profiles = bot.profiles.filter(profile => profile.service == message.service)
+      const profiles = bot.data.profiles.filter(profile => profile.service == message.service)
 
       if (profiles.length <= 0)
         return message
@@ -45,7 +45,7 @@ export default async function weather(message, bot) {
         if (profile) profile.username = message.author.username
       }
 
-      message.output  = `Sorry, I don't have a location set for you\nUse \`${bot.settings.prefix}profile location <name or zip code>\` here or in a PM to set one`
+      message.output  = `Sorry, I don't have a location set for you\nUse \`${bot.data.settings.prefix}profile location <name or zip code>\` here or in a PM to set one`
 
       if (!profile)
         return message
@@ -71,7 +71,7 @@ export default async function weather(message, bot) {
       message.output = new DiscordJS.RichEmbed()
 
       message.output.setAuthor(`Weather report for ${profile?.username || location.name}`, current.imageUrl)        
-      message.output.setColor(bot.settings.color)
+      message.output.setColor(bot.data.settings.color)
       
       message.output.addField(`${current.day} ${current.observationtime}`, current.skytext)
       message.output.addField("Temp", `${current.temperature}°C/${Math.floor(current.temperature*1.8+32)}°F`, true)

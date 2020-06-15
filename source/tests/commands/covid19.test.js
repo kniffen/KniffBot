@@ -9,8 +9,10 @@ import * as covid19Cmd from "../../bot/commands/covid19"
 describe("commands/covid19()", function() {
 
   const bot = {
-    settings: {
-      color: 0xFF0000
+    data: {
+      settings: {
+        color: 0xFF0000
+      }
     }
   }
 

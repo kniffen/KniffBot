@@ -1,15 +1,17 @@
 import assert from "assert"
 import sinon  from "sinon"
 
-import deepCopy          from "../../bot/utils/deepCopy"
-import * as saveProfiles from "../../bot/utils/saveProfiles"
-import * as profileCmd   from "../../bot/commands/profile"
+import deepCopy        from "../../bot/utils/deepCopy"
+import * as saveData   from "../../bot/utils/saveData"
+import * as profileCmd from "../../bot/commands/profile"
 
 describe("commands/profile()", function() {
 
   const bot = {
-    settings: {
-      color: 0xFF0000
+    data: {
+      settings: {
+        color: 0xFF0000
+      }
     }
   }
 
@@ -113,7 +115,7 @@ describe("commands/profile()", function() {
   }
 
   before(function() {
-    sinon.stub(saveProfiles, "default")
+    sinon.stub(saveData, "default")
   })
 
   after(function() {
@@ -121,7 +123,7 @@ describe("commands/profile()", function() {
   })
 
   beforeEach(function() {
-    bot.profiles = [
+    bot.data.profiles = [
       {
         id: 1234,
         location: "baz",
@@ -144,7 +146,7 @@ describe("commands/profile()", function() {
       }
     ]
 
-    saveProfiles.default.resetHistory()
+    saveData.default.resetHistory()
   })
 
   it("Should have appropriate properties", function() {
@@ -376,12 +378,12 @@ describe("commands/profile()", function() {
 
     assert.deepEqual(messages, expected)
 
-    assert.deepEqual(saveProfiles.default.args[0][0], bot)
-    assert.deepEqual(saveProfiles.default.args[1][0], bot)
-    assert.deepEqual(saveProfiles.default.args[2][0], bot)
-    assert.deepEqual(saveProfiles.default.args[3][0], bot)
+    assert.deepEqual(saveData.default.args[0][0], bot.data)
+    assert.deepEqual(saveData.default.args[1][0], bot.data)
+    assert.deepEqual(saveData.default.args[2][0], bot.data)
+    assert.deepEqual(saveData.default.args[3][0], bot.data)
 
-    assert.deepEqual(bot.profiles, [
+    assert.deepEqual(bot.data.profiles, [
       {
         id:       1234,
         location: "baz",
@@ -466,7 +468,7 @@ describe("commands/profile()", function() {
     messages[1] = await profileCmd.default(messages[1], bot)
     messages[2] = await profileCmd.default(messages[2], bot)
     
-    assert.deepEqual(bot.profiles, [
+    assert.deepEqual(bot.data.profiles, [
       {
         id: 1234,
         location: "baz",
@@ -491,7 +493,7 @@ describe("commands/profile()", function() {
     messages[3] = await profileCmd.default(messages[3], bot)
     messages[4] = await profileCmd.default(messages[4], bot)
 
-    assert.deepEqual(bot.profiles, [
+    assert.deepEqual(bot.data.profiles, [
       {
         id: 1234,
         location: "baz",
@@ -510,9 +512,9 @@ describe("commands/profile()", function() {
 
     messages[5] = await profileCmd.default(messages[5], bot)
 
-    assert.equal(saveProfiles.default.args.length, 2)
-    assert.equal(saveProfiles.default.args[0][0], bot)
-    assert.equal(saveProfiles.default.args[1][0], bot)
+    assert.equal(saveData.default.args.length, 2)
+    assert.equal(saveData.default.args[0][0], bot.data)
+    assert.equal(saveData.default.args[1][0], bot.data)
     assert.deepEqual(messages, expected)
 
   })

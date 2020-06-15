@@ -7,8 +7,10 @@ import * as statsCmd from "../../bot/commands/stats"
 describe("commands/stats()", function() {
 
   const bot = {
-    settings: {
-      color: 0xFF0000
+    data: {
+      settings: {
+        color: 0xFF0000
+      }
     }
   }
 

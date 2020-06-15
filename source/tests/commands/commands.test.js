@@ -6,9 +6,11 @@ import deepCopy from "../../bot/utils/deepCopy"
 describe("commands/commands()", function() {
 
   const bot = {
-    settings: {
-      prefix: "??",
-      color: 0xFF0000
+    data: {
+      settings: {
+        prefix: "??",
+        color: 0xFF0000
+      }
     }
   }
 

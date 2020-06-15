@@ -13,7 +13,7 @@ export const isRestricted = false
 
 export default async function helpCmd(message, bot) {
 
-  const { prefix } = bot.settings
+  const { prefix } = bot.data.settings
 
   if (message.command.args.length < 1) {
     message.output = `Missing arguments use. \`${prefix}${id} ${args.map(subArgs => subArgs.join(' ')).join(" or ")}\``

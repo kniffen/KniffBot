@@ -11,16 +11,18 @@ describe("commands/time()", function() {
   const format = sinon.spy(() => "foobar")
 
   const bot = {
-    settings: {
-      prefix: "??"
-    },
-    profiles: [
-      {
-        service:  "quux",
-        id:       1234,
-        location: "foo bar"
-      }
-    ]
+    data: {
+      settings: {
+        prefix: "??"
+      },
+      profiles: [
+        {
+          service:  "quux",
+          id:       1234,
+          location: "foo bar"
+        }
+      ]
+    }
   }
 
   async function fakeFetch(url) {

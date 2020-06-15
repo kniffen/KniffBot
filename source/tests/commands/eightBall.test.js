@@ -6,8 +6,10 @@ import * as eightBallCmd from "../../bot/commands/eightBall"
 describe("commands/eightBall()", function() {
 
   const bot = {
-    settings: {
-      prefix: "??"
+    data: {
+      settings: {
+        prefix: "??"
+      }
     }
   }
 

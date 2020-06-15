@@ -35,7 +35,7 @@ const answers = [
 export default async function eightBall(message, bot) {
 
   if (!message?.command?.args.length) {
-    message.output = `Something went wrong 😱\nDo \`${bot.settings.prefix}help ${id}\` for usage.`
+    message.output = `Something went wrong 😱\nDo \`${bot.data.settings.prefix}help ${id}\` for usage.`
   } else {
     message.output = answers[ Math.floor( Math.random() * answers.length ) ]
     message.isReply = true

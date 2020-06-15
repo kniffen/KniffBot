@@ -34,26 +34,21 @@ try {
     twitchIRC: null,
     cleverbot: null,
     wolframAlpha: null,
-    profiles: [],
-    settings: {
-      prefix: '!',
-      color: 0xFF0000
+    data: {
+      settings: {
+        prefix: '!',
+        color: 0xFF0000
+      },
+      profiles: [],
+      cachedMessages: []
     }
   }
 
+  // load saved data
+  const savedData = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../../data.json")))
 
-  // Load settings from file
-  const loadedSettings = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../../settings.json")))
-
-  if (loadedSettings)
-    bot.settings = Object.assign(bot.settings, loadedSettings)
-
-  // load profiles from file
-  const loadedProfiles = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../../profiles.json")))
-
-  if (loadedSettings)
-    bot.profiles = Object.assign(bot.profiles, loadedProfiles)
-
+  if (savedData)
+    bot.data = Object.assign(bot.data, savedData)
 
   // Setup Discord
   if (process.env.DISCORD_TOKEN) {

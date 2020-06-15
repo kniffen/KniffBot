@@ -63,8 +63,10 @@ describe("eventHandlers.message()", function() {
 
     it("should not run restricted commands unless issued by the server owner", async function() {
       const bot = {
-        settings: {
-          color: "#FFFFFF"
+        data: {
+          settings: {
+            color: "#FFFFFF"
+          }
         }
       }
 

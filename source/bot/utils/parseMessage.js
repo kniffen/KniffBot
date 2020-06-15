@@ -69,9 +69,9 @@ export default function parseMessage(service = '', original = {}, bot) {
   if (message.input.toLowerCase().includes(`@${message.self.username.toLowerCase()}`))
     message.isMentioned = true
 
-  if (message.input.substr(0, bot.settings.prefix.length) == bot.settings.prefix) {
+  if (message.input.substr(0, bot.data.settings.prefix.length) == bot.data.settings.prefix) {
     const args = message.input.split(' ')
-    const id   = args.shift().substring(bot.settings.prefix.length).toLowerCase()
+    const id   = args.shift().substring(bot.data.settings.prefix.length).toLowerCase()
     
     message.command = {id, args}
   }

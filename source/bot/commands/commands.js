@@ -24,7 +24,7 @@ export default async function(message, bot) {
     message.output = new RichEmbed()
 
     message.output.setAuthor("🤖 Available bot commands")
-    message.output.setColor(bot.settings.color)
+    message.output.setColor(bot.data.settings.color)
 
     const categories = available.map(cmd => cmd.category)
                                 .reduce((cats, cat) => cats.includes(cat) ? cats : [...cats, cat], [])
@@ -32,14 +32,14 @@ export default async function(message, bot) {
     for (const category of  categories) {
       const value = available.filter(cmd => cmd.category == category)
                              .filter(cmd => !cmd.isRestricted || message.isOwner)
-                             .map(cmd => bot.settings.prefix+cmd.id)
+                             .map(cmd => bot.data.settings.prefix+cmd.id)
                              .join('\n')
 
       message.output.addField(category, value, true)
     }
 
   } else {
-    message.output = available.map(cmd => bot.settings.prefix+cmd.id)
+    message.output = available.map(cmd => bot.data.settings.prefix+cmd.id)
                               .join(' ')
   }
 

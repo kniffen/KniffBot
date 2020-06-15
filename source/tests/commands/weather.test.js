@@ -8,21 +8,23 @@ import * as weatherCmd from "../../bot/commands/weather"
 describe("commands/weather()", function() {
 
   const bot = {
-    settings: {
-      prefix: "??",
-      color: "#FF0000"
-    },
-    profiles: [
-      {
-        id:       1234,
-        location: "foo bar",
-        service:  "discord"
+    data: {
+      settings: {
+        prefix: "??",
+        color: "#FF0000"
       },
-      {
-        id:       4321,
-        service:  "discord",
-      }
-    ]
+      profiles: [
+        {
+          id:       1234,
+          location: "foo bar",
+          service:  "discord"
+        },
+        {
+          id:       4321,
+          service:  "discord",
+        }
+      ]
+    }
   }
 
   let weatherData, discordResult

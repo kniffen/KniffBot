@@ -15,8 +15,10 @@ describe("utils/parseMessage()", function() {
         username: "foo"
       }
     },
-    settings: {
-      prefix: "??"
+    data: {
+      settings: {
+        prefix: "??"
+      }
     }
   }
 
