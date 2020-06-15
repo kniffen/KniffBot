@@ -5,10 +5,11 @@
   * TODO
   * - Move to settings/options as a static command 
   */
-export const id       = "ping"
-export const category = "utility"
-export const services = ["discord", "twitchIRC"]
-export const args     = [[]]
+export const id           = "ping"
+export const category     = "utility"
+export const services     = ["discord", "twitchIRC"]
+export const args         = [[]]
+export const isRestricted = false
 
 export default async function ping(message) {
 

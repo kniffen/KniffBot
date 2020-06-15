@@ -11,11 +11,15 @@ describe("commands/cat()", function() {
     }
   }
 
-  it("Should have appropriate meta properties", function() {
-    assert.equal(helpCmd.id,           "help")
-    assert.equal(helpCmd.category,     "utility")
-    assert.deepEqual(helpCmd.services, ["discord", "twitchIRC"])
-    assert.deepEqual(helpCmd.args,     [["<command>"]])
+  it("Should have appropriate properties", function() {
+    assert.deepEqual(helpCmd, {
+      id:           "help",
+      category:     "utility",
+      services:     ["discord", "twitchIRC"],
+      args:         [["<command>"]],
+      isRestricted: false,
+      default:      helpCmd.default
+    })
   })
 
   it("should output a specific error message if there are missing arguments", async function() {

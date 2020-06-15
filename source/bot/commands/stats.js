@@ -9,10 +9,11 @@
 import DiscordJS from "discord.js"
 import pkg from "../../../package.json"
 
-export const id       = "stats"
-export const category = "utility"
-export const services = ["discord"]
-export const args     = [[]]
+export const id           = "stats"
+export const category     = "utility"
+export const services     = ["discord"]
+export const args         = [[]]
+export const isRestricted = true
 
 function formatTime(input) {
   const dd = i => i < 10 ? '0'+i : i

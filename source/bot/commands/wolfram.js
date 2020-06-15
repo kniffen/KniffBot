@@ -5,10 +5,11 @@
 
 import DiscordJS from "discord.js"
 
-export const id       = "wolfram"
-export const category = "info"
-export const services = ["discord"]
-export const args     = [["<query>"]]
+export const id           = "wolfram"
+export const category     = "info"
+export const services     = ["discord"]
+export const args         = [["<query>"]]
+export const isRestricted = false
 
 export default async function wolfram(message, bot) {
 

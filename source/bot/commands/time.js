@@ -9,10 +9,11 @@
 import moment from "moment-timezone"
 import fetch  from "node-fetch"
 
-export const id       = "time"
-export const category = "info"
-export const services = ["discord", "twitchIRC"]
-export const args     = [
+export const id           = "time"
+export const category     = "info"
+export const services     = ["discord", "twitchIRC"]
+export const isRestricted = false
+export const args         = [
   [],
   ["<location>"],
   ["@username"]

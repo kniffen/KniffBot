@@ -24,11 +24,15 @@ describe("commands/xkcd()", function() {
     fetch.default.resetHistory()
   })
 
-  it("Should have appropriate meta properties", function() {
-    assert.equal(xkcdCmd.id,           "xkcd")
-    assert.equal(xkcdCmd.category,     "fun")
-    assert.deepEqual(xkcdCmd.services, ["discord", "twitchIRC"])
-    assert.deepEqual(xkcdCmd.args,     [[], ["<id>"]])
+  it("Should have appropriate properties", function() {
+    assert.deepEqual(xkcdCmd, {
+      id:           "xkcd",
+      category:     "fun",
+      services:     ["discord", "twitchIRC"],
+      args:         [[], ["<id>"]],
+      isRestricted: false,
+      default:      xkcdCmd.default
+    })
   })
 
   it("should output the latest XKCD comic", async function() {

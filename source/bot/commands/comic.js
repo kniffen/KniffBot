@@ -13,10 +13,11 @@ import Jimp from "jimp"
 
 import parseMessage from "../utils/parseMessage"
 
-export const id       = "comic"
-export const category = "fun"
-export const services = ["discord"]
-export const args     = [["<amount>"]]
+export const id           = "comic"
+export const category     = "fun"
+export const services     = ["discord"]
+export const args         = [["<amount>"]]
+export const isRestricted = false
 
 export default async function(message, bot) {
 

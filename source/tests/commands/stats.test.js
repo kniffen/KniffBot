@@ -32,11 +32,15 @@ describe("commands/stats()", function() {
     sinon.restore()
   })
 
-  it("Should have appropriate meta properties", function() {
-    assert.equal(statsCmd.id,            "stats")
-    assert.equal(statsCmd.category,      "utility")
-    assert.deepEqual(statsCmd.services, ["discord"])
-    assert.deepEqual(statsCmd.args,     [[]])
+  it("Should have appropriate properties", function() {
+    assert.deepEqual(statsCmd, {
+      id:           "stats",
+      category:     "utility",
+      services:     ["discord"],
+      args:         [[]],
+      isRestricted: true,
+      default:      statsCmd.default
+    })
   })
 
   it("should output various information about the bot", async function() {

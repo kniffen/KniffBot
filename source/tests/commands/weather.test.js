@@ -130,15 +130,19 @@ describe("commands/weather()", function() {
     }
   })
 
-  it("Should have appropriate meta properties", function() {
-    assert.equal(weatherCmd.id,           "weather")
-    assert.equal(weatherCmd.category,     "info")
-    assert.deepEqual(weatherCmd.services, ["discord", "twitchIRC"])
-    assert.deepEqual(weatherCmd.args,     [
-      [],
-      ["<location>"],
-      ["@username"]
-    ])
+  it("Should have appropriate properties", function() {
+    assert.deepEqual(weatherCmd, {
+      id:           "weather",
+      category:     "info",
+      services:     ["discord", "twitchIRC"],
+      args:         [
+       [],
+       ["<location>"],
+       ["@username"]
+      ],
+      isRestricted: false,
+      default:      weatherCmd.default
+    })
   })
 
   it("should output a weather report for a location", async function() {

@@ -69,15 +69,19 @@ describe("commands/time()", function() {
     fetch.default.resetHistory()
   })
 
-  it("Should have appropriate meta properties", function() {
-    assert.equal(timeCmd.id,           "time")
-    assert.equal(timeCmd.category,     "info")
-    assert.deepEqual(timeCmd.services, ["discord", "twitchIRC"])
-    assert.deepEqual(timeCmd.args,     [
-      [],
-      ["<location>"],
-      ["@username"]
-    ])
+  it("Should have appropriate properties", function() {
+    assert.deepEqual(timeCmd, {
+      id:           "time",
+      category:     "info",
+      services:     ["discord", "twitchIRC"],
+      args:         [
+        [],
+        ["<location>"],
+        ["@username"]
+      ],
+      isRestricted: false,
+      default:      timeCmd.default
+    })
   })
 
   it("should output the current UTC time", async function() {

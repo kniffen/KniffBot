@@ -10,11 +10,15 @@ describe("commands/dog()", function() {
     sinon.restore()
   })
 
-  it("Should have appropriate meta properties", function() {
-    assert.equal(dogCmd.id,           "dog")
-    assert.equal(dogCmd.category,     "fun")
-    assert.deepEqual(dogCmd.services, ["discord", "twitchIRC"])
-    assert.deepEqual(dogCmd.args,     [[]])
+  it("Should have appropriate properties", function() {
+    assert.deepEqual(dogCmd, {
+      id:           "dog",
+      category:     "fun",
+      services:     ["discord", "twitchIRC"],
+      args:         [[]],
+      isRestricted: false,
+      default:      dogCmd.default
+    })
   })
 
   it("should output a random dog image", async function() {

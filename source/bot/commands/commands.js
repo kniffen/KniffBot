@@ -3,10 +3,11 @@
   * Outputs a list of available commands for the API the message originated from
   */
 
-export const id       = "commands"
-export const category = "info"
-export const services = ["discord", "twitchIRC"]
-export const args     = [[]]
+export const id           = "commands"
+export const category     = "info"
+export const services     = ["discord", "twitchIRC"]
+export const args         = [[]]
+export const isRestricted = false
 
 import { RichEmbed } from "discord.js"
 
@@ -30,6 +31,7 @@ export default async function(message, bot) {
 
     for (const category of  categories) {
       const value = available.filter(cmd => cmd.category == category)
+                             .filter(cmd => !cmd.isRestricted || message.isOwner)
                              .map(cmd => bot.settings.prefix+cmd.id)
                              .join('\n')
 

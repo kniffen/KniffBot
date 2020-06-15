@@ -10,11 +10,15 @@ describe("commands/cat()", function() {
     sinon.restore()
   })
 
-  it("Should have appropriate meta properties", function() {
-    assert.equal(catCmd.id,           "cat")
-    assert.equal(catCmd.category,     "fun")
-    assert.deepEqual(catCmd.services, ["discord", "twitchIRC"])
-    assert.deepEqual(catCmd.args,     [[]])
+  it("Should have appropriate properties", function() {
+    assert.deepEqual(catCmd, {
+      id:           "cat",
+      category:     "fun",
+      services:     ["discord", "twitchIRC"],
+      args:         [[]],
+      isRestricted: false,
+      default:      catCmd.default
+    })
   })
 
   it("should output a random cat image", async function() {

@@ -14,11 +14,15 @@ describe("commands/wolfram()", function() {
     wolframAlpha: {}
   }
 
-  it("Should have appropriate meta properties", function() {
-    assert.equal(wolframCmd.id,           "wolfram")
-    assert.equal(wolframCmd.category,     "info")
-    assert.deepEqual(wolframCmd.services, ["discord"])
-    assert.deepEqual(wolframCmd.args,     [["<query>"]])
+  it("Should have appropriate properties", function() {
+    assert.deepEqual(wolframCmd, {
+      id:           "wolfram",
+      category:     "info",
+      services:     ["discord"],
+      args:         [["<query>"]],
+      isRestricted: false,
+      default:      wolframCmd.default
+    })
   })
 
   it("should output a specific error message if there are missing arguments", async function() {

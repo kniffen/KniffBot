@@ -19,7 +19,6 @@ export default async function messageEventHandeler(service, data, bot) {
   if (message.isBot) return
 
   if (message.command) {
-
     let command
 
     for (const key in commands) {
@@ -29,6 +28,14 @@ export default async function messageEventHandeler(service, data, bot) {
 
     // Quit if the command does not exist
     if (!command || !command.services.includes(service)) return
+
+    // Quit if command is restricted
+    if (command.isRestricted && !message.isOwner) {
+      message.output  = "You do not have permission to use this command."
+      message.isReply = true
+      
+      return sendMessage(message, bot)
+    }
 
     message = await command.default(message, bot)
 

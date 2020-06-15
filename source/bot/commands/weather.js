@@ -8,10 +8,11 @@ import { promisify } from "util"
 import DiscordJS from "discord.js"
 import weatherJS from "weather-js"
 
-export const id       = "weather"
-export const category = "info"
-export const services = ["discord", "twitchIRC"]
-export const args     = [
+export const id           = "weather"
+export const category     = "info"
+export const services     = ["discord", "twitchIRC"]
+export const isRestricted = false
+export const args         = [
   [],
   ["<location>"],
   ["@username"]

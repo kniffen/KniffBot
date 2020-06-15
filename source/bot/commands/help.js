@@ -5,10 +5,11 @@
 
 import commands from "./"
 
-export const id       = "help"
-export const category = "utility"
-export const services = ["discord", "twitchIRC"]
-export const args     = [["<command>"]]
+export const id           = "help"
+export const category     = "utility"
+export const services     = ["discord", "twitchIRC"]
+export const args         = [["<command>"]]
+export const isRestricted = false
 
 export default async function helpCmd(message, bot) {
 

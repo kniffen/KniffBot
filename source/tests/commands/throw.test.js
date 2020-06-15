@@ -16,11 +16,15 @@ describe("commands/throw()", function() {
     }
   }
 
-  it("Should have appropriate meta properties", function() {
-    assert.equal(throwCmd.id,           "throw")
-    assert.equal(throwCmd.category,     "fun")
-    assert.deepEqual(throwCmd.services, ["discord", "twitchIRC"])
-    assert.deepEqual(throwCmd.args,     [[], ["<thing>"]])
+  it("Should have appropriate properties", function() {
+    assert.deepEqual(throwCmd, {
+      id:           "throw",
+      category:     "fun",
+      services:     ["discord", "twitchIRC"],
+      args:         [[], ["<thing>"]],
+      isRestricted: false,
+      default:      throwCmd.default
+    })
   })
 
   it("should throw the arguments", async function() {

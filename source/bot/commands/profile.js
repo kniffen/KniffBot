@@ -8,10 +8,11 @@ import moment    from "moment-timezone"
 
 import saveProfiles from "../utils/saveProfiles"
 
-export const id       = "profile"
-export const category = "utility"
-export const services = ["discord"]
-export const args     = [
+export const id           = "profile"
+export const category     = "utility"
+export const services     = ["discord"]
+export const isRestricted = false
+export const args         = [
   [],
   ["location"],
   ["location", "<location>"],

@@ -61,6 +61,45 @@ describe("eventHandlers.message()", function() {
       }, "bar"])
     })
 
+    it("should not run restricted commands unless issued by the server owner", async function() {
+      const bot = {
+        settings: {
+          color: "#FFFFFF"
+        }
+      }
+
+      parseMessage.default.callsFake(() => ({
+        command: {id: "stats"}
+      }))
+
+      await messageEventHandler("discord", "foo", bot)
+    
+      parseMessage.default.callsFake(() => ({
+        isOwner: true,
+        command: {id: "stats"}
+      }))
+
+      await messageEventHandler("discord", "foo", bot)
+
+      assert.deepEqual(sendMessage.default.args[0], [
+        {
+          command: {id: "stats"},
+          isReply: true,
+          output:  "You do not have permission to use this command."  
+        },
+        bot
+      ])
+
+      assert.deepEqual(sendMessage.default.args[1], [
+        {
+          command: {id: "stats"},
+          isOwner: true,
+          output:  sendMessage.default.args[1][0].output
+        },
+        bot
+      ])
+    })
+
     it("should only run commands if the service is allowed", async function() {
       parseMessage.default.callsFake(() => ({
         command: {id: "ping"}

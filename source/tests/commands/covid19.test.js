@@ -20,11 +20,15 @@ describe("commands/covid19()", function() {
     sinon.restore()
   })
 
-  it("Should have appropriate meta properties", function() {
-    assert.equal(covid19Cmd.id,           "covid19")
-    assert.equal(covid19Cmd.category,     "info")
-    assert.deepEqual(covid19Cmd.services, ["discord"])
-    assert.deepEqual(covid19Cmd.args,     [[], ["country/state"]])
+  it("Should have appropriate properties", function() {
+    assert.deepEqual(covid19Cmd, {
+      id:           "covid19",
+      category:     "info",
+      services:     ["discord"],
+      args:         [[], ["country/state"]],
+      isRestricted: false,
+      default:      covid19Cmd.default
+    })
   })
 
   it("Should output world wide stats and news", async function() {

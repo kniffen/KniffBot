@@ -45,6 +45,7 @@ describe("utils/parseMessage()", function() {
       isReply:     false,
       isBot:       false,
       isDM:        false,
+      isOwner:     false,
       author:      {username: ''},
       self:        {username: ''},
       original:    {}
@@ -70,10 +71,18 @@ describe("utils/parseMessage()", function() {
 
     const discordMessage = {
       cleanContent:     '',
-      id:               1234,
+      id:               1111,
       createdTimestamp: 2,
       author:           {username: "bar"},
-      channel:          {type: "text"}
+      channel:          {type: "text"},
+      member: {
+        guild: {
+          ownerID: "2222"
+        },
+        user: {
+          id: "3333"
+        }
+      }
     }
 
     const expectedTemplate = {
@@ -87,15 +96,10 @@ describe("utils/parseMessage()", function() {
       isReply:     false,
       isBot:       false,
       isDM:        false,
+      isOwner:     false,
       author:      {username: 'bar'},
       self:        {username: 'foo'},
-      original:    {
-        cleanContent:     '',
-        id:               1234,
-        createdTimestamp: 2,
-        author:           {username: "bar"},
-        channel:          {type: "text"}
-      }
+      original:    deepCopy(discordMessage)
     } 
 
     it("should parse messages", function() {
@@ -116,7 +120,7 @@ describe("utils/parseMessage()", function() {
         command:  {id: "foo", args: ["bar", "baz"]},
         original: {
           cleanContent:     "??foo bar baz",
-          id:               1234,
+          id:               1111,
           createdTimestamp: 2,
           author:           {username: "bar"},
         }
@@ -216,10 +220,37 @@ describe("utils/parseMessage()", function() {
       const data = deepCopy(discordMessage, {
         channel: {type: "dm"}
       })
+
       const expected = deepCopy(expectedTemplate, {
-        isDM: true,
+        isDM:    true,
+        isOwner: true,
         original: {
           channel: {type: "dm"}
+        }
+      })
+
+      const message = parseMessage("discord", data, bot)
+
+      assert.deepEqual(message, expected)
+    })
+
+    it("should detect if the message is from he server owner", function() {
+      const data = deepCopy(discordMessage, {
+        member: {
+          user: {
+            id: "2222"
+          }
+        }
+      })
+
+      const expected = deepCopy(expectedTemplate, {
+        isOwner: true,
+        original: {
+          member: {
+            user: {
+              id: "2222"
+            }
+          }
         }
       })
 
@@ -245,7 +276,8 @@ describe("utils/parseMessage()", function() {
       isMentioned: false,
       isReply:     false,
       isBot:       false,
-      isDM :       false,
+      isDM:        false,
+      isOwner:     false,
       author:      {username: 'baz'},
       self:        {username: 'bar'},
       mentions:    [],

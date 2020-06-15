@@ -6,10 +6,11 @@
 import fetch from "node-fetch"
 import { RichEmbed } from "discord.js"
 
-export const id       = "covid19"
-export const category = "info"
-export const services = ["discord"]
-export const args     = [[], ["country/state"]]
+export const id           = "covid19"
+export const category     = "info"
+export const services     = ["discord"]
+export const args         = [[], ["country/state"]]
+export const isRestricted = false
 
 export default async function covid19Cmd(message, bot) {
   let total, country, countryYesterday, state, stateYesterday, news

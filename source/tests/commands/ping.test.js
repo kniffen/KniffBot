@@ -5,11 +5,15 @@ import * as pingCmd from "../../bot/commands/ping"
 
 describe("commands/ping()", function() {
 
-  it("Should have appropriate meta properties", function() {
-    assert.equal(pingCmd.id,            "ping")
-    assert.equal(pingCmd.category,      "utility")
-    assert.deepEqual(pingCmd.services, ["discord", "twitchIRC"])
-    assert.deepEqual(pingCmd.args,     [[]])
+  it("Should have appropriate properties", function() {
+    assert.deepEqual(pingCmd, {
+      id:           "ping",
+      category:     "utility",
+      services:     ["discord", "twitchIRC"],
+      args:         [[]],
+      isRestricted: false,
+      default:      pingCmd.default
+    })
   })
 
   it("should output \"Pong!\"", async function() {

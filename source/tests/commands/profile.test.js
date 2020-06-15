@@ -147,17 +147,21 @@ describe("commands/profile()", function() {
     saveProfiles.default.resetHistory()
   })
 
-  it("Should have appropriate meta properties", function() {
-    assert.equal(profileCmd.id,           "profile")
-    assert.equal(profileCmd.category,     "utility")
-    assert.deepEqual(profileCmd.services, ["discord"])
-    assert.deepEqual(profileCmd.args,     [
-      [],
-      ["location"],
-      ["location", "<location>"],
-      ["remove", "<item>"],
-      ["@username"]
-    ])
+  it("Should have appropriate properties", function() {
+    assert.deepEqual(profileCmd, {
+      id:           "profile",
+      category:     "utility",
+      services:     ["discord"],
+      args:         [
+        [],
+        ["location"],
+        ["location", "<location>"],
+        ["remove", "<item>"],
+        ["@username"]
+      ],
+      isRestricted: false,
+      default:      profileCmd.default
+    })
   })
 
   it("should output a rich embed of the author's profile", async function() {

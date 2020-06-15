@@ -19,11 +19,15 @@ describe("commands/eightBall()", function() {
     sinon.restore()
   })
 
-  it("Should have appropriate meta properties", function() {
-    assert.equal(eightBallCmd.id,           "8ball")
-    assert.equal(eightBallCmd.category,     "fun")
-    assert.deepEqual(eightBallCmd.services, ["discord", "twitchIRC"])
-    assert.deepEqual(eightBallCmd.args,     [["<question>"]])
+  it("Should have appropriate properties", function() {
+    assert.deepEqual(eightBallCmd, {
+      id:           "8ball",
+      category:     "fun",
+      services:     ["discord", "twitchIRC"],
+      args:         [["<question>"]],
+      isRestricted: false,
+      default:      eightBallCmd.default
+    })
   })
 
   it("should output a random answer", async function() {

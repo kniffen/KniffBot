@@ -3,10 +3,11 @@
   * The a digital representation of the classic 8ball toy
   */
 
-export const id       = "8ball"
-export const category = "fun"
-export const services = ["discord", "twitchIRC"]
-export const args     = [["<question>"]]
+export const id           = "8ball"
+export const category     = "fun"
+export const services     = ["discord", "twitchIRC"]
+export const args         = [["<question>"]]
+export const isRestricted = false
 
 const answers = [
   'It is certain',
