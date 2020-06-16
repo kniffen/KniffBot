@@ -4,7 +4,7 @@
   */
 
 import fetch from "node-fetch"
-import { RichEmbed } from "discord.js"
+import { MessageEmbed } from "discord.js"
 
 export const id           = "covid19"
 export const category     = "info"
@@ -31,7 +31,7 @@ export default async function covid19Cmd(message, bot) {
     }
   }
 
-  message.output = new RichEmbed()
+  message.output = new MessageEmbed()
 
   message.output.setColor(bot.data.settings.color)
   message.output.setTimestamp(total.updated)
@@ -61,8 +61,8 @@ export default async function covid19Cmd(message, bot) {
     message.output.addField("Deaths today",       location?.todayDeaths?.toLocaleString()          || "\u200b", true)
     message.output.addField("Deaths per million", location?.deathsPerOneMillion?.toLocaleString()  || "\u200b", true)
 
-    message.output.addField("Tests",              location?.tests?.toLocaleString()   || "\u200b", true)
-    message.output.addBlankField(true)
+    message.output.addField("Tests",              location?.tests?.toLocaleString()   || "\u200b",              true)
+    message.output.addField("\u200b",             "\u200b",                                                     true)
     message.output.addField("Tests per million",  location?.testsPerOneMillion?.toLocaleString()   || "\u200b", true)
   }
 

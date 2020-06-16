@@ -9,7 +9,7 @@ export const services     = ["discord", "twitchIRC"]
 export const args         = [[]]
 export const isRestricted = false
 
-import { RichEmbed } from "discord.js"
+import { MessageEmbed } from "discord.js"
 
 import commands from "./"
 
@@ -21,7 +21,7 @@ export default async function(message, bot) {
     return message
 
   if (message.service == "discord") {
-    message.output = new RichEmbed()
+    message.output = new MessageEmbed()
 
     message.output.setAuthor("🤖 Available bot commands")
     message.output.setColor(bot.data.settings.color)

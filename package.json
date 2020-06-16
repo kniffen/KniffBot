@@ -22,7 +22,7 @@
   "dependencies": {
     "@babel/runtime": "^7.10.2",
     "cleverbot-node": "^0.3.11",
-    "discord.js": "^11.6.4",
+    "discord.js": "^12.2.0",
     "dotenv-flow": "^3.1.0",
     "irc-framework": "^4.8.1",
     "jimp": "^0.9.8",

@@ -29,10 +29,10 @@ export default async function profile(message, bot) {
   let user = message.mentions?.length > 0 ? message.mentions[0] : message.author
 
   if (!message.isDM) {
-    member = message.original?.channel.guild.members.find(member => member.id == user.id)
+    member = await message.original?.channel.guild.members.fetch(user.id)
 
     user            = member?.user 
-    roles           = member?.roles
+    roles           = member?.roles.cache
     joinedTimestamp = member?.joinedTimestamp
   }
 
@@ -86,7 +86,7 @@ export default async function profile(message, bot) {
   } else {
     roles = roles.filter(role => role.name != "@everyone").map(role => role.name)
 
-    message.output = new DiscordJS.RichEmbed()
+    message.output = new DiscordJS.MessageEmbed()
 
     message.output.setAuthor(`Profile for ${user.username}`, user.avatarURL)
     message.output.setColor(bot.data.settings.color)

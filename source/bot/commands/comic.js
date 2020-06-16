@@ -38,9 +38,9 @@ export default async function(message, bot) {
 
   const loadedImg = await Jimp.read(path.resolve(__dirname, images[amount - 1].path))
   const font      = await Jimp.loadFont(Jimp.FONT_SANS_16_BLACK)
-  const messages  = (await message.original.channel.fetchMessages()).array()
-                                                                    .map(msg => parseMessage(message.service, msg, bot))
-                                                                    .filter(msg => !msg.command && !msg.isBot)
+  const messages  = (await message.original.channel.messages.fetch()).array()
+                                                                     .map(msg => parseMessage(message.service, msg, bot))
+                                                                     .filter(msg => !msg.command && !msg.isBot)
 
   for (let i = 0; i < amount; i++) {
     loadedImg.print(font,

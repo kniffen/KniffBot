@@ -27,18 +27,16 @@ function formatTime(input) {
 
 export default async function(message, bot) {
 
-  message.output = new DiscordJS.RichEmbed()
+  message.output = new DiscordJS.MessageEmbed()
 
   message.output.setTitle("🤖 Bot statistics")
   message.output.setURL(pkg.homepage)
   message.output.setColor(bot.data.settings.color)
   
-  message.output.addField(pkg.name, 'v' + pkg.version, true)
+  message.output.addField(pkg.name, 'v' + pkg.version,            true)
+  message.output.addField("\u200b", "\u200b",                     true)
   message.output.addField("Uptime", formatTime(process.uptime()), true)
-
-  message.output.addBlankField(true)
-
-  message.output.addField("Node", process.version,  true)
+  message.output.addField("Node",   process.version,              true)
 
   const dependencies = [
     "discord.js",

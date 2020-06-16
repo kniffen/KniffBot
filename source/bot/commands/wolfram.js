@@ -23,7 +23,7 @@ export default async function wolfram(message, bot) {
   try {
     const result = await bot.wolframAlpha.query(query)
     
-    message.output = new DiscordJS.RichEmbed()
+    message.output = new DiscordJS.MessageEmbed()
 
     message.output.setTitle(result.data.queryresult.pods[0].subpods[0].plaintext)
     message.output.setColor(bot.data.settings.color)

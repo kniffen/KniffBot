@@ -13,12 +13,6 @@ export default async function throwCmd(message, bot) {
 
   message.output = `(╯°□°）╯︵ ${message.input.replace(`${bot.data.settings.prefix}${id}`, '')}`
 
-  for (const emoji of message.emojis) {
-    const e = bot.discord.emojis.get(emoji.id)
-
-    message.output = message.output.replace(emoji.string, e || emoji.name)
-  }
-
   return message
 
 }

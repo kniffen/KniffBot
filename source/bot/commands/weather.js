@@ -68,7 +68,7 @@ export default async function weather(message, bot) {
 
     if (message.service == "discord") {
 
-      message.output = new DiscordJS.RichEmbed()
+      message.output = new DiscordJS.MessageEmbed()
 
       message.output.setAuthor(`Weather report for ${profile?.username || location.name}`, current.imageUrl)        
       message.output.setColor(bot.data.settings.color)
