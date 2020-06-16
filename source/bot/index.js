@@ -17,11 +17,13 @@ import { WolframClient } from "node-wolfram-alpha"
 
 import log from "./utils/log"
 
-import errorEventHandler        from "./eventHandlers/error"
-import connectedEventHandler    from "./eventHandlers/connected"
-import disconnectedEventHandler from "./eventHandlers/disconnected"
-import messageEventHandler      from "./eventHandlers/message"
-
+import errorEventHandler           from "./eventHandlers/error"
+import connectedEventHandler       from "./eventHandlers/connected"
+import disconnectedEventHandler    from "./eventHandlers/disconnected"
+import messageEventHandler         from "./eventHandlers/message"
+import messageDeletedEventHandler  from "./eventHandlers/messageDeleted"
+import reactionAddedEventHandler   from "./eventHandlers/reactionAdded"
+import reactionRemovedEventHandler from "./eventHandlers/reactionRemoved"
 
 try {
 
@@ -54,10 +56,15 @@ try {
   if (process.env.DISCORD_TOKEN) {
     bot.discord = new DiscordJS.Client()
 
-    bot.discord.on("error",        (error) => errorEventHandler("discord", error))  
-    bot.discord.on("ready",        ()      => connectedEventHandler("discord"))  
-    bot.discord.on("disconnected", ()      => disconnectedEventHandler("discord", bot))  
-    bot.discord.on("message",      (data)  => messageEventHandler("discord", data, bot))
+    bot.discord.on("error",         (error) => errorEventHandler("discord", error))  
+    bot.discord.on("ready",         ()      => connectedEventHandler("discord", bot))  
+    bot.discord.on("disconnected",  ()      => disconnectedEventHandler("discord", bot))  
+    bot.discord.on("message",       (data)  => messageEventHandler("discord", data, bot))
+    bot.discord.on("messageDelete", (data)  => messageDeletedEventHandler("discord", data, bot))
+
+    bot.discord.on("messageReactionAdd",    (reaction, user) => reactionAddedEventHandler(reaction, user, bot))
+    bot.discord.on("messageReactionRemove", (reaction, user) => reactionRemovedEventHandler(reaction, user, bot))
+
   } else {
     log({
       label:   "Discord",
