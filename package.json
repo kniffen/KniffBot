@@ -5,6 +5,7 @@
   "main": "dist/bot/index.js",
   "scripts": {
     "start": "node dist/bot/index.js",
+    "build": "npx gulp build",
     "test": "NODE_ENV=test npx gulp test",
     "dev": "NODE_ENV=test npx gulp dev"
   },
