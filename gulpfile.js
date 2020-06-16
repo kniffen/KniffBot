@@ -36,6 +36,7 @@ function test() {
       reporter: 'spec',
       timeout:   5000,
       require:   ['source-map-support/register'],
+      exit: true
     }))
 }
 
