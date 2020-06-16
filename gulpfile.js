@@ -23,7 +23,7 @@ function build() {
     }))
     .pipe(sourcemaps.write('.', {
       sourceRoot: function (file) {
-        return file.cwd + '/src';
+        return file.cwd + '/source';
       }
     }))
     .pipe(gulp.dest("dist"))
