@@ -21,9 +21,19 @@ export default async function removeRoleReact(message, bot) {
     for(const channel of bot.discord.channels.cache.array()) {
       if (channel.type != "text") continue
       
-      rrMessage = await channel.messages.fetch(messageID)
+      rrMessage = await channel.messages.fetch(messageID).catch(() => { /* ignore */ })
 
-      if (rrMessage) channelID = channel.id
+      if (rrMessage) {
+        channelID = channel.id
+        break
+      }
+    }
+
+    if (!rrMessage) {
+      message.output  = "Sorry, I was unable to find that message."
+      message.isReply = true
+      
+      return message
     }
 
     const cachedMessageIndex = bot.data.cachedMessages.findIndex(msg => msg.channelID == channelID && msg.messageID == messageID)
@@ -47,14 +57,14 @@ export default async function removeRoleReact(message, bot) {
     } else {
       await rrMessage.reactions.removeAll()
       bot.data.cachedMessages.splice(cachedMessageIndex, 1)
-      saveData(bot.data)
+      saveData(bot.data)         
     }
 
   } catch (err) {
 
     console.log(err)
   
-    message.output = `Something went wrong 😱Do \`${bot.data.settings.prefix}help ${id}\` for usage.`
+    message.output = `Something went wrong 😱, \`${err.message}\``
     message.isReply = true
 
   }
