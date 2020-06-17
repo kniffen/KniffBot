@@ -2,7 +2,7 @@
   * Disconnection event handler/callback
   */
 
-import log from "../../bot/utils/log"
+import log from "../utils/log"
 
 export default function disconnectedEventHandler(id, bot) {
 
