@@ -16,6 +16,7 @@ import * as removeRoleReact from "./removeRoleReact"
 import * as stats           from "./stats"
 import * as throwCmd        from "./throw"
 import * as time            from "./time"
+import * as uptime          from "./uptime"
 import * as weather         from "./weather"
 import * as wolfram         from "./wolfram"
 import * as xkcd            from "./xkcd"
@@ -35,6 +36,7 @@ export default [
   stats,
   throwCmd,
   time,
+  uptime,
   weather,
   wolfram,
   xkcd
