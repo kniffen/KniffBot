@@ -1,16 +1,24 @@
 export default async function reactionRemoved(reaction, user, bot) {
 
-  const cachedMessage = bot.data.cachedMessages.find(msg => msg.channelID == reaction.message.channel.id && msg.messageID == reaction.message.id)
+  try {
 
-  if (!cachedMessage) return
+    const cachedMessage = bot.data.cachedMessages.find(msg => msg.channelID == reaction.message.channel.id && msg.messageID == reaction.message.id)
 
-  const roleReaction = cachedMessage.roleReactions.find(rr => rr.emojiID == reaction.emoji.id || rr.emojiID == reaction.emoji.name)
+    if (!cachedMessage) return
 
-  if (!roleReaction) return
+    const roleReaction = cachedMessage.roleReactions.find(rr => rr.emojiID == reaction.emoji.id || rr.emojiID == reaction.emoji.name)
 
-  const member = await reaction.message.channel.guild.members.fetch(user.id)
-  const role   = await reaction.message.channel.guild.roles.fetch(roleReaction.roleID)
+    if (!roleReaction) return
 
-  member.roles.remove(role).catch(console.error)
+    const member = await reaction.message.channel.guild.members.fetch(user.id)
+    const role   = await reaction.message.channel.guild.roles.fetch(roleReaction.roleID)
+
+    member.roles.remove(role)
+
+  } catch(err) {
+
+    console.error(err)
+
+  }
   
 }
