@@ -28,7 +28,9 @@ export default async function connectedEventHandler(id, bot) {
       for(const channel of channels) {
         if (channel.type != "text") continue
 
-        msg = await channel.messages.fetch(messages[i].messageID).catch(console.log)     
+        msg = await channel.messages.fetch(messages[i].messageID).catch(() => { /* ignore */ })
+
+        if (msg) break    
       }
 
       // Remove deleted messages
