@@ -4,8 +4,12 @@
 
 import log from "../../bot/utils/log"
 
-export default function errorEventHandler(label, message) {
+export default function errorEventHandler(label, err) {
 
-  log({label, message, isError: true})
+  if (!err || !err.message) return
+
+  console.log(err)
+
+  log({label, message: err.message})
 
 }
