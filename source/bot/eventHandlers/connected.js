@@ -2,8 +2,8 @@
   * Connection event handler/callback
   */
 
-import log      from "../utils/log"
-import saveData from "../utils/saveData"
+import log from "../utils/log"
+import * as inspector from "../utils/inspector"
 
 export default async function connectedEventHandler(id, bot) {
 
@@ -12,33 +12,9 @@ export default async function connectedEventHandler(id, bot) {
     message: "connected", 
   })
 
-  // cache role reaction messages
-  if (id == "discord")  {
-    log({
-      label: id,
-      message: "caching role reaction messages", 
-    })
+  clearInterval(inspector.intervals[id])
 
-    const messages = bot.data.cachedMessages
-    const channels = bot.discord.channels.cache.array()
-    
-    for (let i = 0; i < messages.length; i++) {
-      let msg
-
-      for(const channel of channels) {
-        if (channel.type != "text") continue
-
-        msg = await channel.messages.fetch(messages[i].messageID).catch(() => { /* ignore */ })
-
-        if (msg) break    
-      }
-
-      // Remove deleted messages
-      if (!msg) {
-        bot.data.cachedMessages.splice(i, 1)
-        saveData(bot.data)
-      }
-    }
-  }
+  inspector.default(id, bot)
+  inspector.intervals[id] = setInterval(() => inspector.default(id, bot), 8.64e+7)
 
 }
