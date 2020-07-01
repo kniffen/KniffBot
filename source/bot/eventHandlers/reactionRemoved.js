@@ -2,6 +2,9 @@ export default async function reactionRemoved(reaction, user, bot) {
 
   try {
 
+    // Quit early if the reaction is by a bot
+    if (user.bot) return
+
     const cachedMessage = bot.data.cachedMessages.find(msg => msg.channelID == reaction.message.channel.id && msg.messageID == reaction.message.id)
 
     if (!cachedMessage) return
