@@ -40,15 +40,7 @@ export default async function removeRoleReact(message, bot) {
 
     if (roleID) {
       const roleIndex = bot.data.cachedMessages[cachedMessageIndex].roleReactions.findIndex(rr => rr.roleID == roleID)
-
-      if (roleIndex < 0) {
-        message.output  = "That role does not exist for this message"
-        message.isReply = true
-
-        return message
-      }
-
-      const reaction = rrMessage.reactions.resolve(bot.data.cachedMessages[cachedMessageIndex].roleReactions[roleIndex].emojiID)
+      const reaction  = rrMessage.reactions.resolve(bot.data.cachedMessages[cachedMessageIndex].roleReactions[roleIndex].emojiID)
 
       await reaction.remove()
       bot.data.cachedMessages[cachedMessageIndex].roleReactions.splice(roleIndex, 1)
@@ -61,10 +53,8 @@ export default async function removeRoleReact(message, bot) {
     }
 
   } catch (err) {
-
-    console.log(err)
   
-    message.output = `Something went wrong 😱, \`${err.message}\``
+    message.output = `Something went wrong 😱\nDo \`${bot.data.settings.prefix}help ${id}\` for usage.`
     message.isReply = true
 
   }

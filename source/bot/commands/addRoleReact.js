@@ -13,12 +13,6 @@ export const isRestricted = true
 
 export default async function addRoleReact(message, bot) {
 
-  if (message.command.args.length < 3) {
-    message.output = `Something went wrong 😱\nDo \`${bot.data.settings.prefix}help ${id}\` for usage.`
-      
-    return message
-  }
-
   try {
     let channelID, rrMessage
     const messageID = message?.command?.args[0]
@@ -35,13 +29,6 @@ export default async function addRoleReact(message, bot) {
         channelID = channel.id
         break
       }
-    }
-
-    if (!rrMessage) {
-      message.output  = "Sorry, I was unable to find that message."
-      message.isReply = true
-      
-      return message
     }
 
     const cachedMessage = bot.data.cachedMessages.find(msg => msg.channelID == channelID && msg.messageID == messageID)
@@ -72,9 +59,7 @@ export default async function addRoleReact(message, bot) {
 
   } catch (err) {
 
-    console.log(err)
-  
-    message.output = `Something went wrong 😱, \`${err.message}\``
+    message.output = `Something went wrong 😱\nDo \`${bot.data.settings.prefix}help ${id}\` for usage.`
     message.isReply = true
   
   }
