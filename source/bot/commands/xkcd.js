@@ -13,10 +13,20 @@ export const isRestricted = false
 
 export default async function(message, bot) {
 
-  const id = message.command?.args[0]
-  const obj = await fetch(id ? `https://xkcd.com/${id}/info.0.json` : 'https://xkcd.com/info.0.json').then(res => res.json()).catch(() => undefined)
+  try {
+  
+    const id = message.command?.args[0]
+    const obj = await fetch(id ? `https://xkcd.com/${id}/info.0.json` : 'https://xkcd.com/info.0.json')
+                        .then(res => res.json())
 
-  message.output = obj?.img ? obj.img : "https://imgs.xkcd.com/comics/not_available.png"
+    message.output = obj.img
+
+  } catch (err) {
+
+    message.output = "https://imgs.xkcd.com/comics/not_available.png"
+
+  }
+
   message.isFile = true
 
   return message

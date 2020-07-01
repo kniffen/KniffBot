@@ -13,9 +13,18 @@ export const isRestricted = false
 
 export default async function catCmd(message) {
 
-  const data = await fetch("http://aws.random.cat/meow")?.then(res => res.json())
+  try {
+    
+    const data = await fetch("http://aws.random.cat/meow").then(res => res.json())
 
-  message.output = data?.file || "http://i.imgur.com/Bai6JTL.jpg"
+    message.output = data.file
+
+  } catch (err) {
+
+    message.output = "http://i.imgur.com/Bai6JTL.jpg"
+  
+  }
+
   message.isFile = true
 
   return message

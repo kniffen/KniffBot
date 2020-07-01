@@ -11,11 +11,20 @@ export const services     = ["discord", "twitchIRC"]
 export const args         = [[]]
 export const isRestricted = false
 
-export default async function catCmd(message) {
+export default async function dogCmd(message) {
 
-  const data = await fetch("https://dog.ceo/api/breeds/image/random")?.then(res => res.json())
+  try {
+    
+    const data = await fetch("https://dog.ceo/api/breeds/image/random").then(res => res.json())
 
-  message.output = data?.message || "https://i.imgur.com/9oPUiCu.gif"
+    message.output = data.message
+
+  } catch (err) {
+
+    message.output = "https://i.imgur.com/9oPUiCu.gif"
+  
+  }
+
   message.isFile = true
 
   return message
