@@ -36,7 +36,7 @@ export default async function(message, bot) {
   } else {
     location = bot.data.profiles.find(profile => profile.service == message.service && profile.id == message.author.id)?.location
     if (!location) {
-      message.output = `\`${moment.utc().format("LLLL z")}\``
+      message.output = `It's currently ${moment.utc().format("LLLL z")}`
     }
   }
   
@@ -50,9 +50,9 @@ export default async function(message, bot) {
       const timeStr = moment.tz(Date.now(), timezone).format("LLLL")
 
       if (message.command?.args?.length > 0) {
-        message.output = `\`${timeStr} ${timezone}\``        
+        message.output = `It's ${timeStr} in ${timezone}`        
       } else {
-        message.output =  `It's \`${timeStr}\` for ${message.mentions?.length > 0 ? message.mentions[0].username : message.author.username}`
+        message.output = `It's ${timeStr} for ${message.mentions?.length > 0 ? message.mentions[0].username : message.author.username}`
       }
     } catch(err) {
       message.output = "Something went wrong 😱\nI was unable to fetch the time for you"
