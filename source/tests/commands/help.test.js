@@ -5,13 +5,17 @@ import * as helpCmd from "../../bot/commands/help"
 
 describe("commands/cat()", function() {
 
-  const bot = {
-    data: {
-      settings: {
-        prefix: "??"
+  let bot
+
+  before(function() {
+    bot = {
+      data: {
+        settings: {
+          prefix: "??"
+        }
       }
     }
-  }
+  })
 
   it("Should have appropriate properties", function() {
     assert.deepEqual(helpCmd, {

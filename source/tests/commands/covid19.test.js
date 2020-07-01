@@ -1,22 +1,24 @@
 import assert     from "assert"
 import sinon      from "sinon"
 import * as fetch from "node-fetch"
-import { RichEmbed } from "discord.js"
+import { MessageEmbed } from "discord.js"
 
 import deepCopy        from "../../bot/utils/deepCopy"
 import * as covid19Cmd from "../../bot/commands/covid19"
 
 describe("commands/covid19()", function() {
 
-  const bot = {
-    data: {
-      settings: {
-        color: 0xFF0000
+  let bot
+
+  before(function() {
+    bot = {
+      data: {
+        settings: {
+          color: "#FF0000"
+        }
       }
     }
-  }
-
-  const richEmbed = new RichEmbed()
+  })
 
   afterEach(function() {
     sinon.restore()
@@ -49,42 +51,27 @@ describe("commands/covid19()", function() {
       }
     }))
 
-    const message = await covid19Cmd.default({
-      command: { args: [] }
-    }, bot)
+    const message  = {command: { args: []}}
+    const expected = deepCopy(message)
+
+
+    expected.output = new MessageEmbed({
+      color: 0xFF0000,
+      timestamp: 1000000
+    })
+
+    expected.output.setAuthor("Latest COVID-19 global stats")
+
+    expected.output.addField("Cases",     "2,000,000", true)
+    expected.output.addField("Deaths",    "3,000,000", true)
+    expected.output.addField("Recovered", "4,000,000", true)
+
+    expected.output.setFooter("Data provided by worldometers.info/coronavirus")
+
+    await covid19Cmd.default(message, bot)
 
     assert.equal(fetch.default.args[0][0], "https://corona.lmao.ninja/v2/all")
-
-    assert.deepEqual(message.output, deepCopy(richEmbed, {
-      author: {
-        url:      undefined,
-        icon_url: undefined,
-        name: "Latest COVID-19 global stats"
-      },
-      color:       0xFF0000,
-      timestamp:   1000000,
-      fields: [
-        {
-          name:  "Cases",
-          value: "2,000,000",
-          inline: true
-        },
-        {
-          name:  "Deaths",
-          value: "3,000,000",
-          inline: true
-        },
-        {
-          name:  "Recovered",
-          value: "4,000,000",
-          inline: true
-        }
-      ],
-      footer: {
-        icon_url: undefined,
-        text:     "Data provided by worldometers.info/coronavirus"
-      }
-    }))
+    assert.deepEqual(message, expected)
   })
 
   it("Should output stats for a specified country or state", async function() {
@@ -148,22 +135,24 @@ describe("commands/covid19()", function() {
     }))
 
     const messages = []
-    messages[0] = await covid19Cmd.default({command: { args: ["Foo"] }},        bot)
-    messages[1] = await covid19Cmd.default({command: { args: ["Bar", "baz"] }}, bot)
-    messages[2] = await covid19Cmd.default({command: { args: ["Qux"] }}, bot)
-    
-    assert.equal(fetch.default.args[0][0], "https://corona.lmao.ninja/v2/all")
-    assert.equal(fetch.default.args[1][0], "https://corona.lmao.ninja/v2/countries")
-    assert.equal(fetch.default.args[2][0], "https://corona.lmao.ninja/v2/states")
+    const expected = []
 
-    assert.deepEqual(messages[0].output, deepCopy(richEmbed, {
+    messages[0] = {command: { args: ["Foo"] }}
+    messages[1] = {command: { args: ["Bar", "baz"] }}
+    messages[2] = {command: { args: ["Qux"] }}
+  
+    expected[0] = deepCopy(messages[0])
+    expected[1] = deepCopy(messages[1])
+    expected[2] = deepCopy(messages[2])
+
+    expected[0].output = new MessageEmbed({
+      color: 0xFF0000,
+      timestamp: 1000000,
       author: {
-        url:      "https://worldometers.info/coronavirus",
-        icon_url: "foo.flag",
-        name:     "Latest COVID-19 stats for FOO"
+        name:    "Latest COVID-19 stats for FOO",
+        url:     "https://worldometers.info/coronavirus",
+        iconURL: "foo.flag",
       },
-      color:       0xFF0000,
-      timestamp:   1000000,
       fields: [
         {
           name:  "Active",
@@ -224,22 +213,22 @@ describe("commands/covid19()", function() {
           name:  "Tests per million",
           value: "12,000,000",
           inline: true
-        },
+        }
       ],
       footer: {
-        icon_url: undefined,
-        text:     "Data provided by worldometers.info/coronavirus"
+        iconURL: undefined,
+        text: "Data provided by worldometers.info/coronavirus"
       }
-    }))
+    })
 
-    assert.deepEqual(messages[1].output, deepCopy(richEmbed, {
+    expected[1].output = new MessageEmbed({
+      color: 0xFF0000,
+      timestamp: 1000000,
       author: {
-        url:      "https://worldometers.info/coronavirus",
-        icon_url: "bar.flag",
-        name:     "Latest COVID-19 stats for BAR BAZ"
+        name:    "Latest COVID-19 stats for BAR BAZ",
+        url:     "https://worldometers.info/coronavirus",
+        iconURL: "bar.flag",
       },
-      color:       0xFF0000,
-      timestamp:   1000000,
       fields: [
         {
           name:  "Active",
@@ -300,21 +289,22 @@ describe("commands/covid19()", function() {
           name:  "Tests per million",
           value: "8,000,000",
           inline: true
-        },
+        }
       ],
       footer: {
-        icon_url: undefined,
-        text:     "Data provided by worldometers.info/coronavirus"
+        iconURL: undefined,
+        text: "Data provided by worldometers.info/coronavirus"
       }
-    }))
-    assert.deepEqual(messages[2].output, deepCopy(richEmbed, {
+    })
+
+    expected[2].output = new MessageEmbed({
+      color: 0xFF0000,
+      timestamp: 1000000,
       author: {
-        url:      "https://worldometers.info/coronavirus",
-        icon_url: "bar.flag",
-        name:     "Latest COVID-19 stats for US"
+        name:    "Latest COVID-19 stats for US",
+        url:     "https://worldometers.info/coronavirus",
+        iconURL: "bar.flag",
       },
-      color:       0xFF0000,
-      timestamp:   1000000,
       fields: [
         {
           name:  "Active",
@@ -375,12 +365,32 @@ describe("commands/covid19()", function() {
           name:  "Tests per million",
           value: "1,200,000",
           inline: true
-        },
+        }
       ],
       footer: {
-        icon_url: undefined,
-        text:     "Data provided by worldometers.info/coronavirus"
+        iconURL: undefined,
+        text: "Data provided by worldometers.info/coronavirus"
       }
-    }))
+    })
+
+    delete expected[0].output.author.proxyIconURL
+    delete expected[1].output.author.proxyIconURL
+    delete expected[2].output.author.proxyIconURL
+
+    delete expected[0].output.footer.proxyIconURL
+    delete expected[1].output.footer.proxyIconURL
+    delete expected[2].output.footer.proxyIconURL
+
+    messages[0] = await covid19Cmd.default(messages[0], bot)
+    messages[1] = await covid19Cmd.default(messages[1], bot)
+    messages[2] = await covid19Cmd.default(messages[2], bot)
+
+    assert.equal(fetch.default.args[0][0], "https://corona.lmao.ninja/v2/all")
+    assert.equal(fetch.default.args[1][0], "https://corona.lmao.ninja/v2/countries")
+    assert.equal(fetch.default.args[2][0], "https://corona.lmao.ninja/v2/states")
+
+    assert.deepEqual(messages[0], expected[0])
+    assert.deepEqual(messages[1], expected[1])
+    assert.deepEqual(messages[2], expected[2])
   })
 })

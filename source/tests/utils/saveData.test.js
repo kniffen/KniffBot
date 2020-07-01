@@ -4,12 +4,22 @@ import path   from "path"
 import fs     from "fs"
 
 import * as log     from "../../bot/utils/log"
-import saveProfiles from "../../bot/utils/saveProfiles"
+import saveData from "../../bot/utils/saveData"
 
-describe("utils/saveProfiles()", function() {
+describe("utils/saveData()", function() {
 
   const bot = {
-    profiles: {foo: "bar"}
+    data: {
+      foo: "bar",
+      bar: {
+        baz: "qux"
+      },
+      baz: [
+        {
+          quux: `quuz`
+        }
+      ]
+    }
   }
 
   before(function() {
@@ -22,20 +32,23 @@ describe("utils/saveProfiles()", function() {
     sinon.restore()
   })
 
-  it("should the profile data to as JSON files", function() {
-    saveProfiles(bot)
+  it("should save the data to a JSON file", function() {
+    saveData(bot.data)
 
     assert(log.default.calledOnce)
+    
     assert.deepEqual(log.default.args[0][0], {
-      message: "Saving profiles"
+      message: "Saving data"
     })
+    
     assert.deepEqual(path.resolve.args[0], [
       __dirname.replace("tests", "bot"),
-      "../../../profiles.json"
+      "../../../data.json"
     ])
+
     assert.deepEqual(fs.writeFileSync.args[0], [
       "foo.bar",
-      JSON.stringify(bot.profiles, null, 3)
+      JSON.stringify(bot.data, null, 3)
     ])
 
   })

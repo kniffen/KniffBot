@@ -7,22 +7,24 @@ import parseMessage from "../../bot/utils/parseMessage"
 
 describe("utils/parseMessage()", function() {
 
-  const format = sinon.spy(() => 1)
-
-  const bot = {
-    discord: {
-      user: {
-        username: "foo"
-      }
-    },
-    data: {
-      settings: {
-        prefix: "??"
-      }
-    }
-  }
+  let bot, format
 
   before(function() {
+    bot = {
+      discord: {
+        user: {
+          username: "foo"
+        }
+      },
+      data: {
+        settings: {
+          prefix: "??"
+        }
+      }
+    }
+
+    format = sinon.spy(() => 1)
+    
     sinon.stub(moment, "utc").returns({format})
   })
 
@@ -31,7 +33,6 @@ describe("utils/parseMessage()", function() {
   })
 
   it("should return a message object no matter what", function() {
-
     const messages = [
       parseMessage(undefined, undefined,    bot),
       parseMessage("foobar",  undefined,    bot),

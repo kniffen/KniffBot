@@ -8,22 +8,23 @@ import * as timeCmd from "../../bot/commands/time"
 
 describe("commands/time()", function() {
 
-  const format = sinon.spy(() => "foobar")
+  let bot, format
 
-  const bot = {
-    data: {
-      settings: {
-        prefix: "??"
-      },
-      profiles: [
-        {
-          service:  "quux",
-          id:       1234,
-          location: "foo bar"
-        }
-      ]
+  before(async function() {
+    bot = {
+      data: {
+        profiles: [
+          {
+            service:  "quux",
+            id:       1234,
+            location: "foo bar"
+          }
+        ]
+      }
     }
-  }
+    
+    format = sinon.spy(() => "foobar")
+  })
 
   async function fakeFetch(url) {
     if (url == "https://maps.googleapis.com/maps/api/geocode/json?key=corge&address=foo%20bar") {
@@ -102,7 +103,7 @@ describe("commands/time()", function() {
       author: {
         id: 5678
       },
-      output: "`foobar`"
+      output: "It's currently foobar"
     })
   })
 
@@ -141,7 +142,7 @@ describe("commands/time()", function() {
       command: {
         args: ["foo", "bar"]
       },
-      output: "`foobar qux`"
+      output: "It's foobar in qux"
     })
     assert.deepEqual(messages[1], {
       service: "quux",
@@ -175,11 +176,11 @@ describe("commands/time()", function() {
     }, bot)
   
     expected[0] = deepCopy(messages[0], {
-      output: "It's `foobar` for quuz"
+      output: "It's foobar for quuz"
     })
     
     expected[1] = deepCopy(messages[1], {
-      output: "`foobar`"
+      output: "It's currently foobar"
     })
     
     assert(moment.utc.calledOnce)
@@ -219,7 +220,7 @@ describe("commands/time()", function() {
     }, bot)
 
     expected[0] = deepCopy(messages[0], {
-      output: "It's `foobar` for corge"
+      output: "It's foobar for corge"
     })
     
     expected[1] = deepCopy(messages[1], {

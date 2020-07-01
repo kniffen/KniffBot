@@ -5,15 +5,17 @@ import * as eightBallCmd from "../../bot/commands/eightBall"
 
 describe("commands/eightBall()", function() {
 
-  const bot = {
-    data: {
-      settings: {
-        prefix: "??"
-      }
-    }
-  }
+  let bot
 
   before(function() {
+    bot = {
+      data: {
+        settings: {
+          prefix: "??"
+        }
+      }
+    }
+    
     sinon.stub(Math, "random").returns(0.5)
   })
 

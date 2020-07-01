@@ -1,20 +1,24 @@
 import assert from "assert"
 import sinon  from "sinon"
 
-import deepCopy from "../../bot/utils/deepCopy"
+import deepCopy        from "../../bot/utils/deepCopy"
 import * as wolframCmd from "../../bot/commands/wolfram"
 
 describe("commands/wolfram()", function() {
 
-  const bot = {
-    data: {
-      settings: {
-        prefix: "??",
-        color: 0xFF0000
-      }
-    },
-    wolframAlpha: {}
-  }
+  let bot
+
+  beforeEach(function() {
+    bot = {
+      data: {
+        settings: {
+          color: "#FF0000",
+          prefix: "??"
+        }
+      },
+      wolframAlpha: {}
+    }
+  })
 
   it("Should have appropriate properties", function() {
     assert.deepEqual(wolframCmd, {
@@ -89,12 +93,14 @@ describe("commands/wolfram()", function() {
         color:       0xFF0000,
         url:         "foo.bar",
         image:       {url: "bar.foo"},
-        author:      undefined,
+        type:        undefined,
         description: undefined,
-        footer:      undefined,
-        thumbnail:   undefined,
-        timestamp:   undefined,
-        file:        undefined,
+        provider:    null,
+        author:      null,
+        footer:      null,
+        thumbnail:   null,
+        timestamp:   null,
+        video:       null,
         files:       [],
         fields: [
           {
@@ -106,8 +112,31 @@ describe("commands/wolfram()", function() {
       }
     })
 
-    expected[1] = deepCopy(expected[0])
-    expected[1].output.url = undefined
+    expected[1] = deepCopy(messages[0], {
+      output: {
+        title:       "bar",
+        color:       0xFF0000,
+        url:         undefined,
+        image:       {url: "bar.foo"},
+        type:        undefined,
+        description: undefined,
+        provider:    null,
+        author:      null,
+        footer:      null,
+        thumbnail:   null,
+        timestamp:   null,
+        video:       null,
+        files:       [],
+        fields: [
+          {
+            inline: false,
+            name:   "baz",
+            value:  "qux"
+          }
+        ]
+      }
+    })
+
 
     messages[0] = await wolframCmd.default(messages[0], bot)
     delete result.data.queryresult.sources
