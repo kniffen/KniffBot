@@ -65,13 +65,9 @@ function createMember(client, opts = {}) {
     user,
     joinedTimestamp: opts.joinedTimestamp || 10000000000,
     roles: {
-      cache: new DiscordJS.Collection(),
-      add:    (role) => {
-        member.roles.cache.set(role.id.toString(), role)
-      },
-      remove: (role) => {
-        member.roles.cache.delete(role.id)
-      }
+      cache:  new DiscordJS.Collection(),
+      add:    async (role) => member.roles.cache.set(role.id.toString(), role),
+      remove: async (role) => member.roles.cache.delete(role.id)
     }
   }
 
@@ -146,7 +142,8 @@ export default function mockDiscord() {
       cache: new DiscordJS.Collection()
     },
     channels: {
-      cache: new DiscordJS.Collection()
+      cache: new DiscordJS.Collection(),
+      fetch: async (id) => client.channels.cache.get(id.toString())
     }
   }
 
