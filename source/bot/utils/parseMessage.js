@@ -36,7 +36,7 @@ export default function parseMessage(service = '', original = {}, bot) {
     message.author     = original.author
     message.self       = {username: bot.discord.user.username}
     message.isDM       = original.channel.type == "dm"
-    message.isOwner    = original.channel.type == "dm" || original.member.guild.ownerID == original.member.user.id
+    message.isOwner    = original.channel.type == "dm" || (original.member ? (original.member.guild.ownerID == original.member.user.id) : false)
 
     message.emojis = original.cleanContent.match(/<:\w+:\w+>/g)?.map(str => {
       const id    = str.replace(/<:\w+:|>/g, '')

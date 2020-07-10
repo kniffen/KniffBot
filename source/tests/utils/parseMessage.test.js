@@ -262,6 +262,18 @@ describe("utils/parseMessage()", function() {
       assert.deepEqual(message, expected)
     })
 
+    it("should handle missing member reference", function() {
+      const data     = deepCopy(discordMessage)
+      const expected = deepCopy(expectedTemplate)
+      
+      data.member              = null
+      expected.original.member = null
+            
+      const message = parseMessage("discord", data, bot)
+
+      assert.deepEqual(message, expected)
+    })
+
   })
 
   describe("Twitch IRC", function() {
