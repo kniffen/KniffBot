@@ -9,35 +9,55 @@ export default async function inspector(service, bot) {
     log({label: service, message: "Running inspector"})
   
     if (service != "discord") return
-    
+
+    const channels = []
+    const messages = []
+    const members  = {}
+
+    // cache messages
     for (const cachedMsg of bot.data.cachedMessages) {
       let channel, message
 
       try {
-        // cache messages
-        channel = await bot.discord.channels.fetch(cachedMsg.channelID)
-        message = await channel.messages.fetch(cachedMsg.messageID)
+        channel = channels.find(channel => channel.id == cachedMsg.channelID)
+        message = messages.find(message => message.id == cachedMsg.messageID && message.channel.id == cachedMsg.channelID)
+
+        if (!channel) {
+          channel = await bot.discord.channels.fetch(cachedMsg.channelID)
+          channels.push(channel)
+        }
+
+        if (!message) {
+          message = await channel.messages.fetch(cachedMsg.messageID)
+          messages.push(message)
+        }
+
+        if (!members[message.guild.id]) {
+          members[message.guild.id] = await message.guild.members.fetch()
+        }
 
         for (const roleReaction of cachedMsg.roleReactions) {
           const reaction = message.reactions.cache.find(react => react.emoji.id   == roleReaction.emojiID
                                                               || react.emoji.name == roleReaction.emojiID)
+          const [ users, role ] = await Promise.all([
+            reaction.users.fetch(),
+            message.guild.roles.fetch(roleReaction.roleID)
+          ])
 
-          if (!reaction) continue
+          for (const member of members[message.guild.id]) {
+            const shouldHaveRole = users.find(user => user.id == member[1].user.id)               ? true : false
+            const hasRole        = member[1].roles.cache.find(existing => existing.id == role.id) ? true : false
 
-          const users   = await reaction.users.fetch()
-          const members = (await Promise.allSettled(users.map(user => message.guild.members.fetch(user.id)))).map(settled => settled.value)
-          const role    = await message.guild.roles.fetch(roleReaction.roleID) 
-
-          if (members.length <= 0 || !role)
-            continue
-       
-          for (const member of members) {
-            if (!member.roles.cache.find(role => role.id == roleReaction.roleID))
-              member.roles.add(role)
+            if (shouldHaveRole && !hasRole) {
+              log({label: service, message: `Adding missing role "${role.name}" to "@${member[1].user.username}"`})
+              member[1].roles.add(role)
+            }
           }
-      
+
         }
+
       } catch (err) {
+
         if (!channel) {
           log({label: service, message: `Unable to find channel with ID "${cachedMsg.channelID}"`})
         } else if (!message) {
@@ -45,16 +65,19 @@ export default async function inspector(service, bot) {
         } else {
           console.error(err)
         }
+
       }
+
     }
-  } catch (err) {
-  
+
+  } catch(err) {
+
     console.error(err)
-  
+
   } finally {
 
     log({label: service, message: "Inspector finished"})
-
+  
   }
 
 }

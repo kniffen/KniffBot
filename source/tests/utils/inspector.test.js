@@ -127,7 +127,6 @@ describe("utils/inspector()", function() {
     it("should cache messages", function() {
       assert.deepEqual(client.channels.fetch.args, [
         ["2001"],
-        ["2001"],
         ["2002"],
         ["2003"]
       ])
@@ -156,6 +155,8 @@ describe("utils/inspector()", function() {
     it("Should log activities", function() {
       assert.deepEqual(log.default.args, [
         [{label: "discord", message: "Running inspector"}],
+        [{label: "discord", message: "Adding missing role \"role-0001\" to \"@foobar\""}],
+        [{label: "discord", message: "Adding missing role \"role-0002\" to \"@foobar\""}],
         [{label: "discord", message: "Unable to find message with ID \"3001\""}],
         [{label: "discord", message: "Unable to find message with ID \"3000\""}],
         [{label: "discord", message: "Unable to find channel with ID \"2003\""}],

@@ -10,9 +10,13 @@ function createGuild(client, opts = {}) {
     members:  {
       cache: new DiscordJS.Collection(),
       fetch: async (id) => {
-        const member = guild.members.cache.get(id.toString())
-        if (member) return member
-        throw new Error("Missing member")
+        if (id) {
+          const member = guild.members.cache.get(id.toString())
+          if (member) return member
+          throw new Error("Missing member")
+        } else {
+          return guild.members.cache
+        }
       }
     },
     roles: {
