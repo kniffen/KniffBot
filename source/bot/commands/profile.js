@@ -29,7 +29,7 @@ export default async function profile(message, bot) {
   let user = message.mentions?.length > 0 ? message.mentions[0] : message.author
 
   if (!message.isDM) {
-    member = await message.original?.channel.guild.members.fetch(user.id)
+    member = await message.original?.channel.guild.members.fetch(user.id).catch(() => { /* ignore */ })
 
     user            = member?.user 
     roles           = member?.roles.cache
