@@ -1,6 +1,6 @@
 {
   "name": "kniffbot",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "A bot aimed to work with multiple APIs at once, but mainly Discord",
   "main": "dist/bot/index.js",
   "scripts": {
