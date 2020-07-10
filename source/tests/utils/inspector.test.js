@@ -5,7 +5,6 @@ import DiscordJS from "discord.js"
 
 import * as inspector from "../../bot/utils/inspector"
 import * as log       from "../../bot/utils/log"
-import * as saveData  from "../../bot/utils/saveData"
 
 import mockDiscord from "./mockDiscordClient"
 
@@ -14,7 +13,7 @@ describe("utils/inspector()", function() {
 
   before(async function() {
     sinon.stub(log, "default")
-    sinon.stub(saveData, "default").callsFake(() => { /* ignore */ })
+    sinon.stub(console, "error").callsFake(() => { /* ignore */ })
 
     bot = {
       data: {
@@ -23,25 +22,40 @@ describe("utils/inspector()", function() {
             "channelID": "2001",
             "messageID": "3000",
             "roleReactions": [
-              {"roleID": "0001", "emojiID": "0011"},
-              {"roleID": "0002", "emojiID": "😱"},
-              {"roleID": "0004", "emojiID": "0014"}
+              {"roleID": "0001", "emojiID": "1001"}, // role exists, reaction exists, user does not have role
+              {"roleID": "0002", "emojiID": "😱"},  // role exists, reaction exists, user does not have role
+              {"roleID": "0003", "emojiID": "1003"}, // role exists, reaction does not exist, user has role
+              {"roleID": "0004", "emojiID": "1004"}, // role does not exist, reaction exists
             ]
           },
           {
             "channelID": "2001",
             "messageID": "3001",
             "roleReactions": [
-              {"roleID": "0003", "emojiID": "0013"},
-              {"roleID": "0004", "emojiID": "0014"}
+              {"roleID": "0001", "emojiID": "1001"}, 
+              {"roleID": "0002", "emojiID": "😱"},  
+              {"roleID": "0003", "emojiID": "1003"},
+              {"roleID": "0004", "emojiID": "1004"},
             ]
           },
           {
             "channelID": "2002",
             "messageID": "3000",
             "roleReactions": [
-              {"roleID": "0001", "emojiID": "0013"},
-              {"roleID": "0003", "emojiID": "😱"}
+              {"roleID": "0001", "emojiID": "1001"}, 
+              {"roleID": "0002", "emojiID": "😱"},  
+              {"roleID": "0003", "emojiID": "1003"},
+              {"roleID": "0004", "emojiID": "1004"},
+            ]
+          },
+          {
+            "channelID": "2003",
+            "messageID": "3000",
+            "roleReactions": [
+              {"roleID": "0001", "emojiID": "1001"}, 
+              {"roleID": "0002", "emojiID": "😱"},  
+              {"roleID": "0003", "emojiID": "1003"},
+              {"roleID": "0004", "emojiID": "1004"},
             ]
           }
         ]
@@ -86,23 +100,20 @@ describe("utils/inspector()", function() {
       channels[2] = client.createChannel({id: "2002", type: "text"})
 
       members[0] = client.createMember({id: "4000", username: "foobar"})
-      members[1] = client.createMember({id: "4001", username: "foobaz"})
 
       messages[0] = client.createMessage({id: "3000", channel: channels[1]})
 
-      reactions[0] = client.createReaction({message: messages[0], emoji: {id: "0011", name: "foo"}, users: [members[0].user]})
-      reactions[1] = client.createReaction({message: messages[0], emoji: {id: "0012", name: "😱" }, users: [members[1].user]})
-      reactions[2] = client.createReaction({message: messages[0], emoji: {id: "0013", name: "baz"}, users: [members[0].user, members[1].user]})
+      reactions[0] = client.createReaction({message: messages[0], emoji: {id: "1001", name: "foo"}, users: [members[0].user]})
+      reactions[1] = client.createReaction({message: messages[0], emoji: {id: "bar",  name: "😱" }, users: [members[0].user]})
+      reactions[2] = client.createReaction({message: messages[0], emoji: {id: "1004", name: "baz"}, users: [members[0].user]})
 
       roles[0] = client.createRole({id: "0001", name: "role-0001"})
       roles[1] = client.createRole({id: "0002", name: "role-0002"})
       roles[2] = client.createRole({id: "0003", name: "role-0003"})
+      roles[3] = client.createRole({id: "0005", name: "role-0005"})
 
-      members[0].roles.add(roles[0])
-      members[0].roles.add(roles[1])
       members[0].roles.add(roles[2])
-
-      members[1].roles.add(roles[0])
+      members[0].roles.add(roles[3])
 
       sinon.spy(client.channels, "fetch")
       sinon.spy(channels[1].messages, "fetch")
@@ -113,11 +124,12 @@ describe("utils/inspector()", function() {
       await inspector.default("discord", bot)
     })
 
-    it("should remove deleted messages from data.cachedMessages", function() {
+    it("should cache messages", function() {
       assert.deepEqual(client.channels.fetch.args, [
         ["2001"],
         ["2001"],
-        ["2002"]
+        ["2002"],
+        ["2003"]
       ])
 
       assert.deepEqual(channels[1].messages.fetch.args, [
@@ -128,40 +140,25 @@ describe("utils/inspector()", function() {
       assert.deepEqual(channels[2].messages.fetch.args, [
         ["3000"]
       ])
-
-      assert.deepEqual(bot.data.cachedMessages, [
-        {
-          "channelID": "2001",
-          "messageID": "3000",
-          "roleReactions": [
-            {"roleID": "0001", "emojiID": "0011"},
-            {"roleID": "0002", "emojiID": "😱"}
-          ]
-        },
-      ])
-
-      assert.equal(saveData.default.args.length, 3)
     })
     
-    it("should add and remove appropriate roles", function() {
-      const _members = guild.members.cache.array()
+    it("should add appropriate roles", function() {
+      const members = guild.members.cache.array()
 
-      assert.deepEqual(_members[0].roles.cache.array(), [
+      assert.deepEqual(members[0].roles.cache.array(), [
+        {id: "0003", name: "role-0003"},
+        {id: "0005", name: "role-0005"},
         {id: "0001", name: "role-0001"},
-        {id: "0003", name: "role-0003"}
-      ])
-
-      assert.deepEqual(_members[1].roles.cache.array(), [
-        {id: "0002", name: "role-0002"}
+        {id: "0002", name: "role-0002"},
       ])
     })
-  
+
     it("Should log activities", function() {
       assert.deepEqual(log.default.args, [
         [{label: "discord", message: "Running inspector"}],
-        [{label: "discord", message: "Removing unwanted role `role-0002` from foobar"}],
-        [{label: "discord", message: "Removing unwanted role `role-0001` from foobaz"}],
-        [{label: "discord", message: "Adding missing role `role-0002` to foobaz"}],
+        [{label: "discord", message: "Unable to find message with ID \"3001\""}],
+        [{label: "discord", message: "Unable to find message with ID \"3000\""}],
+        [{label: "discord", message: "Unable to find channel with ID \"2003\""}],
         [{label: "discord", message: "Inspector finished"}],
       ])
 
