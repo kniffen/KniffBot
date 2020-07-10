@@ -9,11 +9,19 @@ function createGuild(client, opts = {}) {
     emojis:   opts.emojis   || [],
     members:  {
       cache: new DiscordJS.Collection(),
-      fetch: async (id) => guild.members.cache.get(id.toString())
+      fetch: async (id) => {
+        const member = guild.members.cache.get(id.toString())
+        if (member) return member
+        throw new Error("Missing member")
+      }
     },
     roles: {
       cache: new DiscordJS.Collection(),
-      fetch: async (id) => guild.roles.cache.get(id.toString())
+      fetch: async (id) => {
+        const role = guild.roles.cache.get(id.toString())
+        if (role) return role
+        throw new Error("Missing role")
+      }
     }
   }
 
@@ -31,7 +39,11 @@ function createChannel(client, opts = {}) {
     guild,
     messages: {
       cache: new DiscordJS.Collection(),
-      fetch: async (id) => channel.messages.cache.get(id.toString())
+      fetch: async (id) => {
+        const message = channel.messages.cache.get(id.toString())
+        if (message) return message
+        throw new Error("Missing message")
+      }
     }
   }
 
@@ -49,6 +61,7 @@ function createUser(client, opts = {}) {
     username:         opts.username         || `username-${guild.members.cache.size}`,
     avatarURL:        opts.avatarURL        || "user-avatar-url",
     createdTimestamp: opts.createdTimestamp || 100000000,
+    bot:              opts.bot              || false,
     presence: {
       status: opts.presence?.status || `user-presence-status`
     }
@@ -109,14 +122,21 @@ function createReaction(client, opts = {}) {
     me:    opts.me    || false,
     count: opts.count || 1,
     emoji: emoji,
+    message,
     remove: async () => message.reactions.cache.delete(reaction.emoji.id),
     users: {
       cache: new DiscordJS.Collection(),
-      fetch: async () => reaction.users.cache
+      fetch: () => new Promise(function(resolve) {
+        process.nextTick(function() {
+          resolve(reaction.users.cache)
+        })
+      })
     }
   }
 
-  for (const user of opts.users) reaction.users.cache.set(user.id, user)
+  if (opts.users)
+    for (const user of opts.users)
+      reaction.users.cache.set(user.id, user)
 
   message.reactions.cache.set(reaction.emoji.id, reaction)
 
@@ -143,7 +163,11 @@ export default function mockDiscord() {
     },
     channels: {
       cache: new DiscordJS.Collection(),
-      fetch: async (id) => client.channels.cache.get(id.toString())
+      fetch: async (id) => {
+        const channel = client.channels.cache.get(id.toString())
+        if (channel) return channel
+        throw new Error("Missing channel")
+      }
     }
   }
 
