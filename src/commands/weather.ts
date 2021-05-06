@@ -18,10 +18,6 @@ const weatherCommand: Command = {
 
 async function run(message: Message) {
 
-  if ( message.command.args.length <= 0 ) {
-    throw new Error(`Missing arguments\nFor help type \`${settings.commandPrefix}help weather\``)
-  }
-
   const query = message.command.args.join(' ')
 
   try {
