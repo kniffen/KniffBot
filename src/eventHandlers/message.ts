@@ -20,7 +20,7 @@ export default async function messageEventHandler(serviceName: string, data: any
 
     let meetsArgRequirements: boolean = false
     for ( const args of command.args ) {
-      if ( message.command.args.length === args.length ) {
+      if ( message.command.args.length >= args.length ) {
         meetsArgRequirements = true
         continue
       }

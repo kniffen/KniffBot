@@ -102,6 +102,33 @@ describe('eventHandlers/messageEventHandler()', function() {
 
     assert.ok(!sendMessageStub.called)
   })
+
+  it('should output an error message if the input does not meet a command\'s argument requirements', async function() {
+    actualMessage.command = {id: 'throw', args: []}
+
+    const expectedMessage = createFakeMessage({
+      command: {id: 'throw', args: []},
+      output: 'Missing or incorrect arguments\nType `!?help throw` for usage',
+      isReply: true
+    })
+
+    await messageEventHandler('foobar', {})
+
+    assert.deepEqual(sendMessageStub.args, [[expectedMessage]])
+  })
+
+  it('should handle more command arguments than required', async function() {
+    actualMessage.command = {id: 'throw', args: ['foo', 'bar']}
+    
+    const expectedMessage = createFakeMessage({
+      command: {id: 'throw', args: ['foo', 'bar']},
+      output: '(╯°□°）╯︵ foo bar'
+    })
+
+    await messageEventHandler('foobar', {})
+
+    assert.deepEqual(sendMessageStub.args, [[expectedMessage]])
+  })
   
   it('should not run restricted commands unless issued by the server owner')
   
