@@ -1,55 +1,51 @@
 {
   "name": "kniffbot",
-  "version": "0.5.3",
-  "description": "A bot aimed to work with multiple APIs at once, but mainly Discord",
-  "main": "dist/bot/index.js",
+  "version": "0.6.0",
+  "description": "A small bot for Discord and Twitch",
+  "private": true,
   "scripts": {
-    "start": "node dist/bot/index.js",
+    "start": "node dist/index.js",
+    "dev": "NODE_ENV=dev npx gulp",
     "build": "npx gulp build",
-    "test": "NODE_ENV=test npx gulp test",
-    "dev": "NODE_ENV=test npx gulp dev"
+    "test": "NODE_ENV=dev npx gulp test"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kniffen/KniffBot.git"
   },
   "keywords": [],
-  "author": "Kniffen <knifftech@gmail.com>",
+  "author": "Kniffen <kniffen@knifftech.org> (https://knifftech.org/)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kniffen/KniffBot/issues"
   },
   "homepage": "https://github.com/kniffen/KniffBot#readme",
+  "devDependencies": {
+    "@types/dotenv-flow": "^3.1.0",
+    "@types/gulp": "^4.0.8",
+    "@types/gulp-mocha": "^0.0.33",
+    "@types/gulp-plumber": "^0.0.32",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^14.14.37",
+    "@types/node-fetch": "^2.5.10",
+    "@types/sinon": "^9.0.11",
+    "gulp": "^4.0.2",
+    "gulp-mocha": "^8.0.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-typescript": "*",
+    "mocha": "^8.3.2",
+    "sinon": "^10.0.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
+  },
   "dependencies": {
     "cleverbot-node": "^0.3.11",
-    "discord.js": "^12.2.0",
-    "dotenv-flow": "^3.1.0",
-    "irc-framework": "^4.8.1",
-    "jimp": "^0.9.8",
-    "moment-timezone": "^0.5.31",
-    "node-fetch": "^2.6.0",
+    "discord.js": "^12.5.3",
+    "dotenv-flow": "^3.2.0",
+    "irc-framework": "^4.10.0",
+    "moment-timezone": "^0.5.33",
+    "node-fetch": "^2.6.1",
     "node-wolfram-alpha": "^1.2.5",
     "weather-js": "^2.0.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.10.2",
-    "@babel/plugin-transform-runtime": "^7.10.1",
-    "@babel/preset-env": "^7.10.2",
-    "@babel/register": "^7.10.1",
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-mocha": "^7.0.2",
-    "gulp-plumber": "^1.2.1",
-    "nodemon": "^2.0.4",
-    "sinon": "^9.0.2",
-    "source-map-support": "^0.5.19"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ],
-    "plugins": [
-      "@babel/plugin-transform-runtime"
-    ]
   }
 }
