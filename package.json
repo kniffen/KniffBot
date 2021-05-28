@@ -4,10 +4,8 @@
   "description": "A small bot for Discord and Twitch",
   "private": true,
   "scripts": {
-    "start": "node dist/index.js",
-    "dev": "NODE_ENV=dev npx gulp",
-    "build": "npx gulp build",
-    "test": "NODE_ENV=dev npx gulp test"
+    "start": "npx ts-node src/index.ts",
+    "test": "NODE_ENV=dev npx ts-mocha --exit tests/**/*.test.ts"
   },
   "repository": {
     "type": "git",
@@ -21,20 +19,11 @@
   },
   "homepage": "https://github.com/kniffen/KniffBot#readme",
   "devDependencies": {
-    "@types/dotenv-flow": "^3.1.0",
-    "@types/gulp": "^4.0.8",
-    "@types/gulp-mocha": "^0.0.33",
-    "@types/gulp-plumber": "^0.0.32",
-    "@types/mocha": "^8.2.2",
     "@types/node": "^14.14.37",
     "@types/node-fetch": "^2.5.10",
-    "@types/sinon": "^9.0.11",
-    "gulp": "^4.0.2",
-    "gulp-mocha": "^8.0.0",
-    "gulp-plumber": "^1.2.1",
-    "gulp-typescript": "*",
     "mocha": "^8.3.2",
     "sinon": "^10.0.1",
+    "ts-mocha": "^8.0.0",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4"
   },

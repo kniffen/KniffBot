@@ -1,3 +1,5 @@
+require('dotenv-flow').config()
+
 import DiscordJS from 'discord.js'
 
 import { Message, Command } from '../types'
