@@ -1,6 +1,6 @@
 {
   "name": "kniffbot",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "A small bot for Discord and Twitch",
   "private": true,
   "scripts": {
