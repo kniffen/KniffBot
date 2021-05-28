@@ -18,7 +18,7 @@ if (
 
 } else {
   
-  throw new Error('Missing Twitch IRC cedentials')
+  throw new Error('Missing Twitch IRC credentials')
 
 }
 
